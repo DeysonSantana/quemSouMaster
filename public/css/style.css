@@ -1,0 +1,116 @@
+:root {
+    --bg-main: #0b0f19;
+    --text-main: #ffffff;
+    --correct-bg: #198754;
+    --skip-bg: #dc3545;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    user-select: none;
+    overflow-x: hidden;
+    transition: background-color 0.25s ease-in-out;
+}
+
+/* Flash de acerto e pulo */
+body.flash-correct {
+    background-color: var(--correct-bg) !important;
+}
+
+body.flash-skip {
+    background-color: var(--skip-bg) !important;
+}
+
+/* Tipografia de Projetor */
+.timer-display {
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1;
+}
+
+.word-display {
+    font-size: clamp(2.6rem, 5.5vw, 5.5rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    word-break: break-word;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+}
+
+.category-badge {
+    font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+    letter-spacing: 1.5px;
+}
+
+/* Placar das equipes nas laterais */
+.team-card {
+    background: rgba(255, 255, 255, 0.07);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 1.25rem;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+
+.team-card.active-team {
+    border-color: #ffc107;
+    background: rgba(255, 193, 7, 0.18);
+    box-shadow: 0 0 25px rgba(255, 193, 7, 0.45);
+    transform: scale(1.02);
+}
+
+.score-num {
+    font-size: clamp(2.8rem, 4.5vw, 4rem);
+    font-weight: 900;
+}
+
+/* Atalhos visuais no rodapé */
+.shortcut-badge {
+    font-size: 0.9rem;
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+    padding: 3px 8px;
+}
+
+/* Modais de Configuração */
+.modal-content {
+    background-color: #161b26;
+    color: #f0f6fc;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal-header, .modal-footer {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.word-list-container {
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.word-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+/* Animação do Campeão */
+@keyframes winnerPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+    100% { transform: scale(1); }
+}
+
+.winner-trophy {
+    font-size: 4.5rem;
+    color: #ffc107;
+    animation: winnerPulse 1.5s infinite;
+}

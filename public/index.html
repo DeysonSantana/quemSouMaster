@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d6efd">
+    <title>Quem Sou Eu? - Cadeira Quente Tech</title>
+    <!-- Bootstrap 5 CSS & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body class="vh-100 d-flex flex-column justify-content-between p-2 p-md-3">
+
+    <!-- CABEÇALHO: CONTROLE DE RODADA, CRONÔMETRO GIGANTE & BOTÕES DE AJUSTE -->
+    <header class="row align-items-center text-center g-2">
+        <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-2 px-3">
+            
+            <!-- Indicador da Rodada Atual -->
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-primary fs-6 px-3 py-2" id="round-indicator">
+                    <i class="bi bi-flag-fill me-1"></i> RODADA: <span id="current-round-num">1</span> / <span id="total-rounds-num">3</span>
+                </span>
+                <span class="badge bg-dark border border-secondary text-white-50 fs-6 px-3 py-2 d-none d-sm-inline" id="words-count-badge">
+                    <i class="bi bi-collection me-1"></i> <span id="total-words-count">0</span> Palavras
+                </span>
+            </div>
+
+            <!-- Cronômetro Central Gigante -->
+            <div class="d-inline-flex align-items-center gap-3 bg-dark bg-opacity-75 px-4 py-1 rounded-4 border border-secondary shadow">
+                <i class="bi bi-clock-history fs-2 text-warning"></i>
+                <div id="timer" class="timer-display text-warning font-monospace">60</div>
+                <span id="game-status-badge" class="badge bg-secondary fs-5 align-self-center">AGUARDANDO</span>
+            </div>
+
+            <!-- Botões de Gerenciamento -->
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-info btn-sm fw-bold px-3 py-2" data-bs-toggle="modal" data-bs-target="#wordsModal">
+                    <i class="bi bi-card-list me-1"></i> Palavras
+                </button>
+                <button class="btn btn-outline-light btn-sm fw-bold px-3 py-2" data-bs-toggle="modal" data-bs-target="#configModal">
+                    <i class="bi bi-gear-fill me-1"></i> Ajustes
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- ÁREA PRINCIPAL: PLACARES LATERAIS + PALAVRA MISTERIOSA CENTRAL -->
+    <main class="row flex-grow-1 align-items-center my-2 g-3">
+        
+        <!-- Placar Lateral Esquerdo: Equipe Alpha -->
+        <div class="col-12 col-md-3 col-xl-2 order-2 order-md-1">
+            <div id="team-a-card" class="team-card active-team p-3 text-center">
+                <span id="team-a-name-badge" class="badge bg-primary fs-6 mb-2 text-uppercase">EQUIPE ALPHA</span>
+                <div id="team-a-score" class="score-num text-primary font-monospace">0</div>
+                <div class="text-white-50 small">PONTOS TOTAIS</div>
+                <div class="mt-2 small text-warning" id="team-a-turn-status">TURNO ATUAL</div>
+            </div>
+        </div>
+
+        <!-- Palavra Misteriosa Central (Destaque do Projetor) -->
+        <div class="col-12 col-md-6 col-xl-8 order-1 order-md-2 text-center">
+            <div class="card bg-dark bg-opacity-75 border-secondary border-2 shadow-lg p-4 p-md-5 rounded-5">
+                <div class="mb-3">
+                    <span id="word-category" class="badge bg-info text-dark category-badge px-3 py-2 text-uppercase">
+                        Pressione ESPAÇO para Iniciar
+                    </span>
+                </div>
+                <h1 id="mystery-word" class="word-display text-light mb-0 py-3">
+                    QUEM SOU EU?
+                </h1>
+                <div id="round-feedback" class="fs-4 fw-bold mt-2 text-secondary">
+                    Turma: Dê dicas sem falar o nome da palavra!
+                </div>
+            </div>
+        </div>
+
+        <!-- Placar Lateral Direito: Equipe Beta -->
+        <div class="col-12 col-md-3 col-xl-2 order-3 order-md-3">
+            <div id="team-b-card" class="team-card p-3 text-center">
+                <span id="team-b-name-badge" class="badge bg-danger fs-6 mb-2 text-uppercase">EQUIPE BETA</span>
+                <div id="team-b-score" class="score-num text-danger font-monospace">0</div>
+                <div class="text-white-50 small">PONTOS TOTAIS</div>
+                <div class="mt-2 small text-secondary" id="team-b-turn-status">AGUARDANDO</div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- RODAPÉ: GUIA DE TECLAS DE ATALHO DO PROFESSOR -->
+    <footer class="row text-center pt-2">
+        <div class="col-12 d-flex flex-wrap justify-content-center align-items-center gap-2 gap-md-3">
+            <span class="text-white-50 small d-none d-lg-inline">Atalhos:</span>
+            <div class="d-flex align-items-center gap-1">
+                <span class="shortcut-badge text-warning font-monospace fw-bold">ESPAÇO</span>
+                <span class="small text-white-50">Iniciar/Pausar</span>
+            </div>
+            <div class="d-flex align-items-center gap-1">
+                <span class="shortcut-badge text-success font-monospace fw-bold">SETA DIR. (➡️)</span>
+                <span class="small text-white-50">Acertou (+1)</span>
+            </div>
+            <div class="d-flex align-items-center gap-1">
+                <span class="shortcut-badge text-danger font-monospace fw-bold">SETA ESQ. (⬅️)</span>
+                <span class="small text-white-50">Pular</span>
+            </div>
+            <div class="d-flex align-items-center gap-1">
+                <span class="shortcut-badge text-info font-monospace fw-bold">TAB</span>
+                <span class="small text-white-50">Trocar Equipe</span>
+            </div>
+            <div class="d-flex align-items-center gap-1">
+                <span class="shortcut-badge text-secondary font-monospace fw-bold">R</span>
+                <span class="small text-white-50">Reiniciar Jogo</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: GERENCIADOR DE PALAVRAS (LOCALSTORAGE) -->
+    <div class="modal fade" id="wordsModal" tabindex="-1" aria-labelledby="wordsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="wordsModalLabel"><i class="bi bi-card-text text-info me-2"></i>Gerenciar Deck de Palavras (Offline / Local)</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    
+                    <!-- Adicionar Palavra Individual -->
+                    <div class="card bg-dark border-secondary p-3 mb-3">
+                        <h6 class="text-warning mb-2"><i class="bi bi-plus-circle me-1"></i> Adicionar Palavra Individual</h6>
+                        <form id="add-word-form" class="row g-2">
+                            <div class="col-12 col-md-6">
+                                <input type="text" id="new-word-input" class="form-control bg-secondary bg-opacity-25 text-light border-secondary" placeholder="Ex: Kubernetes" required>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <input type="text" id="new-category-input" class="form-control bg-secondary bg-opacity-25 text-light border-secondary" placeholder="Ex: DevOps & Nuvem" required>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                <button type="submit" class="btn btn-success w-100 fw-bold"><i class="bi bi-plus-lg"></i> Adicionar</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Inserção Rápida em Lote -->
+                    <div class="accordion mb-3" id="accordionBatch">
+                        <div class="accordion-item bg-dark border-secondary">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-dark text-light border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBatch">
+                                    <i class="bi bi-file-earmark-text me-2 text-primary"></i> Inserir Várias Palavras em Lote (Texto)
+                                </button>
+                            </h2>
+                            <div id="collapseBatch" class="accordion-collapse collapse" data-bs-parent="#accordionBatch">
+                                <div class="accordion-body">
+                                    <p class="small text-white-50 mb-2">Digite ou cole as palavras linha por linha no formato: <code>Palavra, Categoria</code> (ou apenas a palavra).</p>
+                                    <textarea id="batch-words-input" class="form-control bg-secondary bg-opacity-25 text-light border-secondary mb-2" rows="4" placeholder="Exemplo:&#10;Docker, DevOps&#10;Python, Linguagem&#10;Scrum, Ágil"></textarea>
+                                    <button type="button" id="btn-import-batch" class="btn btn-primary btn-sm fw-bold">
+                                        <i class="bi bi-upload me-1"></i> Importar Lista em Lote
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lista de Palavras Cadastradas -->
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0 text-light"><i class="bi bi-list-check me-1"></i> Palavras Cadastradas (<span id="modal-words-count">0</span>)</h6>
+                        <button type="button" id="btn-reset-default-words" class="btn btn-outline-warning btn-sm">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i> Restaurar Palavras Padrão
+                        </button>
+                    </div>
+                    <div id="words-list" class="word-list-container pe-1">
+                        <!-- Itens renderizados via JS -->
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: AJUSTES DA PARTIDA & RODADAS -->
+    <div class="modal fade" id="configModal" tabindex="-1" aria-labelledby="configModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="configModalLabel"><i class="bi bi-sliders text-warning me-2"></i>Configurações da Partida</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="game-config-form">
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-light fw-bold">Quantidade de Rodadas por Equipe:</label>
+                            <select id="config-rounds" class="form-select bg-dark text-light border-secondary">
+                                <option value="1">1 Rodada</option>
+                                <option value="2">2 Rodadas</option>
+                                <option value="3" selected>3 Rodadas (Padrão)</option>
+                                <option value="5">5 Rodadas</option>
+                                <option value="10">10 Rodadas</option>
+                            </select>
+                            <div class="form-text text-white-50">Cada rodada consiste no turno da Equipe Alpha e da Equipe Beta.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-light fw-bold">Tempo por Rodada (Segundos):</label>
+                            <select id="config-timer-duration" class="form-select bg-dark text-light border-secondary">
+                                <option value="30">30 Segundos</option>
+                                <option value="45">45 Segundos</option>
+                                <option value="60" selected>60 Segundos (1 Minuto)</option>
+                                <option value="90">90 Segundos</option>
+                                <option value="120">120 Segundos (2 Minutos)</option>
+                            </select>
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label text-primary fw-bold">Nome Equipe 1:</label>
+                                <input type="text" id="config-team-a-name" class="form-control bg-dark text-light border-secondary" value="Equipe Alpha">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label text-danger fw-bold">Nome Equipe 2:</label>
+                                <input type="text" id="config-team-b-name" class="form-control bg-dark text-light border-secondary" value="Equipe Beta">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 fw-bold">
+                            <i class="bi bi-check2-circle me-1"></i> Salvar e Aplicar Ajustes
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: VITÓRIA / FIM DE JOGO -->
+    <div class="modal fade" id="winnerModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="winnerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered text-center">
+            <div class="modal-content p-4">
+                <div class="modal-body">
+                    <div class="winner-trophy mb-3">
+                        <i class="bi bi-trophy-fill"></i>
+                    </div>
+                    <h2 class="text-warning fw-bolder mb-2" id="winner-title">FIM DE JOGO!</h2>
+                    <h3 class="display-6 fw-bold text-light mb-4" id="winner-team-name">EQUIPE ALPHA VENCEU!</h3>
+                    
+                    <div class="row g-3 justify-content-center mb-4">
+                        <div class="col-5">
+                            <div class="p-3 bg-primary bg-opacity-25 border border-primary rounded-4">
+                                <h6 class="text-primary mb-1" id="winner-score-team-a-label">ALPHA</h6>
+                                <div class="fs-2 fw-bolder font-monospace" id="winner-team-a-pts">0</div>
+                                <small class="text-white-50">pontos</small>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="p-3 bg-danger bg-opacity-25 border border-danger rounded-4">
+                                <h6 class="text-danger mb-1" id="winner-score-team-b-label">BETA</h6>
+                                <div class="fs-2 fw-bolder font-monospace" id="winner-team-b-pts">0</div>
+                                <small class="text-white-50">pontos</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="btn-play-again" class="btn btn-success btn-lg px-5 fw-bold rounded-pill">
+                        <i class="bi bi-arrow-repeat me-2"></i> Jogar Novamente
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle & Game Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/game.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+</body>
+</html>

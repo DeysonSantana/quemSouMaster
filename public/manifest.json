@@ -1,0 +1,24 @@
+{
+  "name": "Quem Sou Eu? - Tech Edition",
+  "short_name": "QuemSouEu",
+  "description": "Jogo educativo estilo Cadeira Quente focado em Tecnologia para Projetores",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#0d6efd",
+  "orientation": "landscape",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3233/3233515.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3233/3233515.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
