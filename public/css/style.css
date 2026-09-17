@@ -102,6 +102,23 @@ body {
     z-index: 1000;
 }
 
+.brand-link {
+    white-space: nowrap !important;
+    flex-shrink: 0;
+}
+
+.brand-title {
+    white-space: nowrap !important;
+    font-size: clamp(1rem, 3.5vw, 1.35rem);
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+.timer-wrapper {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
 /* Efeito Flash Visual de Acerto / Pulo */
 body.flash-correct {
     background-color: var(--correct-flash) !important;
@@ -113,7 +130,7 @@ body.flash-skip {
 
 /* Tipografia Fluida & Responsiva */
 .timer-display {
-    font-size: clamp(2rem, 4.5vw, 4.2rem);
+    font-size: clamp(1.8rem, 4.5vw, 4.2rem);
     font-weight: 900;
     letter-spacing: 1px;
     line-height: 1;
@@ -328,11 +345,19 @@ body.flash-skip {
 /* Otimizações Responsivas Mobile */
 @media (max-width: 576px) {
     .main-navbar {
-        padding: 6px 10px !important;
+        padding: 6px 8px !important;
+    }
+
+    .brand-title {
+        font-size: 0.95rem !important;
     }
     
     .timer-display {
-        font-size: 1.8rem;
+        font-size: 1.6rem !important;
+    }
+
+    .timer-wrapper {
+        padding: 3px 8px !important;
     }
     
     .arena-card {

@@ -26,11 +26,11 @@
     <header class="main-navbar px-2 px-md-3 py-2 shadow-sm">
         <div class="container-fluid d-flex justify-content-between align-items-center flex-nowrap gap-2">
             
-            <!-- Marca Quem Sou Master -->
-            <div class="d-flex align-items-center gap-2">
-                <a href="#" class="d-flex align-items-center text-decoration-none text-light" onclick="gameEngine.showView('game')">
-                    <img src="./favicon.png" alt="Logo Quem Sou Master" width="34" height="34" class="rounded-circle me-2 border border-warning shadow-sm">
-                    <span class="fw-bolder fs-5 text-light tracking-wide">Quem Sou <span class="text-warning">Master</span></span>
+            <!-- Marca Quem Sou Master (Sem quebra de linha em mobile) -->
+            <div class="d-flex align-items-center gap-1 gap-sm-2 flex-nowrap">
+                <a href="#" class="brand-link d-flex align-items-center text-decoration-none text-light text-nowrap" onclick="gameEngine.showView('game')">
+                    <img src="./favicon.png" alt="Logo Quem Sou Master" width="30" height="30" class="rounded-circle me-1 border border-warning shadow-sm">
+                    <span class="brand-title fw-bolder text-light text-nowrap">Quem Sou <span class="text-warning">Master</span></span>
                 </a>
                 <span class="badge bg-danger rounded-pill px-2 py-1 d-none" id="streak-indicator">
                     🔥 <span id="streak-count">2x</span>
@@ -38,15 +38,15 @@
             </div>
 
             <!-- Cronômetro Central Flutuante -->
-            <div class="d-flex align-items-center gap-2 bg-dark bg-opacity-75 px-3 py-1 rounded-pill border border-secondary shadow-sm">
-                <i class="bi bi-clock-history fs-4 text-warning"></i>
+            <div class="timer-wrapper d-flex align-items-center gap-1 gap-sm-2 bg-dark bg-opacity-75 px-2 px-sm-3 py-1 rounded-pill border border-secondary shadow-sm">
+                <i class="bi bi-clock-history fs-5 fs-sm-4 text-warning"></i>
                 <div id="timer" class="timer-display text-warning font-monospace">60</div>
                 <span id="game-status-badge" class="badge bg-secondary fs-6 align-self-center d-none d-sm-inline">AGUARDANDO</span>
             </div>
 
             <!-- Botão Único Menu Toggle -->
             <div>
-                <button class="btn btn-outline-light rounded-pill px-3 py-1.5 d-flex align-items-center gap-2 fw-bold shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+                <button class="btn btn-outline-light rounded-pill px-2 px-sm-3 py-1 d-flex align-items-center gap-1 gap-sm-2 fw-bold shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
                     <i class="bi bi-list fs-5"></i>
                     <span>Menu</span>
                 </button>
@@ -184,11 +184,12 @@
     </main>
 
     <!-- ======================================================
-         RODAPÉ LIMPO COM ATALHOS
+         RODAPÉ RESPONSIVO: ATALHOS NO DESKTOP / DISCRETO NO MOBILE
     ====================================================== -->
     <footer class="text-center py-2 px-3 border-top border-secondary bg-dark bg-opacity-50">
-        <div class="d-flex flex-wrap justify-content-center align-items-center gap-2 gap-md-3">
-            <span class="text-white-50 small d-none d-md-inline">Atalhos do Professor:</span>
+        <!-- Atalhos para Desktop / Projetor -->
+        <div class="d-none d-md-flex flex-wrap justify-content-center align-items-center gap-2 gap-md-3">
+            <span class="text-white-50 small">Atalhos do Teclado:</span>
             <div class="d-flex align-items-center gap-1">
                 <span class="shortcut-badge text-warning font-monospace fw-bold">ESPAÇO</span>
                 <span class="small text-white-50">Iniciar/Pausar</span>
@@ -209,6 +210,11 @@
                 <span class="shortcut-badge text-light font-monospace fw-bold">F</span>
                 <span class="small text-white-50">Tela Cheia</span>
             </div>
+        </div>
+
+        <!-- Rodapé Limpo para Mobile -->
+        <div class="d-flex d-md-none justify-content-center align-items-center text-white-50 small">
+            <span>🎮 Toque nos botões para controlar a partida</span>
         </div>
     </footer>
 
@@ -316,7 +322,7 @@
 
                     <button class="menu-item-btn" data-bs-toggle="modal" data-bs-target="#rulesModal">
                         <i class="bi bi-question-circle-fill text-light fs-5"></i>
-                        <span>Como Jogar (Regras)</span>
+                        <span>Como Jogar (Regras & Atalhos)</span>
                     </button>
 
                     <button class="menu-item-btn" onclick="gameEngine.toggleFullscreen();">
@@ -357,7 +363,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row g-3">
+                    <div class="row g-3 mb-4">
                         <div class="col-12 col-md-4 text-center p-3 bg-dark bg-opacity-50 rounded-4 border border-secondary">
                             <div class="fs-1 text-warning mb-2">🪑</div>
                             <h6 class="fw-bold text-light">1. A Cadeira Quente</h6>
@@ -371,7 +377,19 @@
                         <div class="col-12 col-md-4 text-center p-3 bg-dark bg-opacity-50 rounded-4 border border-secondary">
                             <div class="fs-1 text-success mb-2">⌨️</div>
                             <h6 class="fw-bold text-light">3. Professor no Controle</h6>
-                            <p class="small text-white-50 mb-0">O professor valida acertos com ➡️ e pulos com ⬅️ pelo teclado ou toque.</p>
+                            <p class="small text-white-50 mb-0">Valide acertos com ➡️ e pulos com ⬅️ no teclado ou botões de toque.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-dark bg-opacity-50 rounded-4 border border-secondary">
+                        <h6 class="text-warning fw-bold mb-2"><i class="bi bi-keyboard me-2"></i>Atalhos Rápidos de Teclado (PC/Projetor):</h6>
+                        <div class="row g-2 small text-white-50">
+                            <div class="col-6 col-md-4"><strong class="text-light">ESPAÇO:</strong> Iniciar / Pausar</div>
+                            <div class="col-6 col-md-4"><strong class="text-success">➡️ Seta Direita:</strong> Acertou (+10 pts)</div>
+                            <div class="col-6 col-md-4"><strong class="text-danger">⬅️ Seta Esquerda:</strong> Pular</div>
+                            <div class="col-6 col-md-4"><strong class="text-info">TAB:</strong> Trocar Equipe</div>
+                            <div class="col-6 col-md-4"><strong class="text-light">F:</strong> Alternar Tela Cheia</div>
+                            <div class="col-6 col-md-4"><strong class="text-warning">R:</strong> Reiniciar Partida</div>
                         </div>
                     </div>
                 </div>

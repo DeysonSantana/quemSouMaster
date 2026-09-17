@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quem-sou-master-v4';
+const CACHE_NAME = 'quem-sou-master-v5';
 const ASSETS = [
     './',
     './index.html',
@@ -22,7 +22,7 @@ const ASSETS = [
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log('[Service Worker] Cacheando assets do Quem Sou Master v4');
+            console.log('[Service Worker] Cacheando assets do Quem Sou Master v5');
             return cache.addAll(ASSETS).catch(err => console.warn('Erro ao salvar assets no cache:', err));
         })
     );
