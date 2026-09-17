@@ -1,10 +1,6 @@
 /**
  * Quem Sou Eu? - Core Game Engine (Multi-Disciplinary Edition)
- * Inspirado nos princípios arquiteturais do QuizMaster:
- * - Framework MDA (Mechanics, Dynamics, Aesthetics)
- * - Modos de Pontuação (Clássico, Combos & Streaks 🔥, Corrida contra o Tempo ⚡)
- * - Pílulas de Curiosidade Pedagógica
- * - Navegação SPA entre Arena de Jogo e Biblioteca de Baralhos
+ * 100% Offline SPA para GitHub Pages
  */
 
 class GameEngine {
@@ -12,20 +8,18 @@ class GameEngine {
         this.deck = [];
         this.currentIndex = 0;
         
-        // Configurações da Partida
         this.config = {
             totalRounds: 3,
             roundDuration: 60,
-            gameMode: 'combo_streak', // 'classic', 'combo_streak', 'speed_rush'
+            gameMode: 'combo_streak',
             showPedagogicalPill: true,
             teamA: { name: 'Equipe Alpha', avatar: '🚀' },
             teamB: { name: 'Equipe Beta', avatar: '🦁' }
         };
 
-        // Estado da Partida
         this.state = {
             currentRound: 1,
-            currentTeam: 'A', // 'A' ou 'B'
+            currentTeam: 'A',
             timeLeft: 60,
             timerInterval: null,
             isRunning: false,
@@ -54,7 +48,6 @@ class GameEngine {
             viewGame: document.getElementById('view-game-arena'),
             viewDecks: document.getElementById('view-decks-library'),
             
-            // Arena
             timer: document.getElementById('timer'),
             word: document.getElementById('mystery-word'),
             category: document.getElementById('word-category'),
@@ -67,7 +60,6 @@ class GameEngine {
             totalRoundsNum: document.getElementById('total-rounds-num'),
             gameModeBadge: document.getElementById('game-mode-badge'),
             
-            // Placar Equipes
             teamAScore: document.getElementById('team-a-score'),
             teamBScore: document.getElementById('team-b-score'),
             teamACard: document.getElementById('team-a-card'),
@@ -77,7 +69,6 @@ class GameEngine {
             teamATurnStatus: document.getElementById('team-a-turn-status'),
             teamBTurnStatus: document.getElementById('team-b-turn-status'),
 
-            // Modais
             winnerModalEl: document.getElementById('winnerModal'),
             winnerTeamName: document.getElementById('winner-team-name'),
             winnerTeamAPts: document.getElementById('winner-team-a-pts'),
@@ -86,6 +77,12 @@ class GameEngine {
             winnerScoreTeamBLabel: document.getElementById('winner-score-team-b-label'),
             winnerDetails: document.getElementById('winner-details')
         };
+    }
+
+    ensureDom() {
+        if (!this.dom || !this.dom.timer) {
+            this.cacheDom();
+        }
     }
 
     loadConfig() {
@@ -119,8 +116,10 @@ class GameEngine {
         this.currentIndex = 0;
     }
 
-    // Navegação SPA de Telas
     showView(viewName) {
+        this.ensureDom();
+        if (!this.dom.viewGame || !this.dom.viewDecks) return;
+
         if (viewName === 'decks') {
             if (this.state.isRunning) this.toggleStartPause();
             this.dom.viewGame.classList.add('d-none');
@@ -132,13 +131,15 @@ class GameEngine {
     }
 
     applyConfigToUI() {
+        this.ensureDom();
+        if (!this.dom.totalRoundsNum) return;
+
         this.dom.totalRoundsNum.textContent = this.config.totalRounds;
         this.dom.currentRoundNum.textContent = this.state.currentRound;
         
-        this.dom.teamANameBadge.innerHTML = `${this.config.teamA.avatar} ${this.config.teamA.name}`;
-        this.dom.teamBNameBadge.innerHTML = `${this.config.teamB.avatar} ${this.config.teamB.name}`;
+        if (this.dom.teamANameBadge) this.dom.teamANameBadge.innerHTML = `${this.config.teamA.avatar} ${this.config.teamA.name}`;
+        if (this.dom.teamBNameBadge) this.dom.teamBNameBadge.innerHTML = `${this.config.teamB.avatar} ${this.config.teamB.name}`;
 
-        // Modo de Jogo Badge
         const modesMap = {
             'classic': '🎯 Modo Clássico',
             'combo_streak': '🔥 Modo Combo / Streaks',
@@ -150,10 +151,13 @@ class GameEngine {
     }
 
     renderCurrentWord() {
+        this.ensureDom();
+        if (!this.dom.word) return;
+
         if (this.deck.length === 0) {
             this.dom.word.textContent = 'SEM CARTAS';
-            this.dom.category.textContent = 'Selecione ou crie um baralho na Biblioteca!';
-            this.dom.curiosityPill.classList.add('d-none');
+            if (this.dom.category) this.dom.category.textContent = 'Selecione ou crie um baralho na Biblioteca!';
+            if (this.dom.curiosityPill) this.dom.curiosityPill.classList.add('d-none');
             return;
         }
 
@@ -164,22 +168,24 @@ class GameEngine {
         const current = this.deck[this.currentIndex];
         if (current) {
             this.dom.word.textContent = current.word;
-            this.dom.category.textContent = current.category || 'Geral';
+            if (this.dom.category) this.dom.category.textContent = current.category || 'Geral';
             
-            // Pílula pedagógica
-            if (this.config.showPedagogicalPill && current.tip) {
+            if (this.config.showPedagogicalPill && current.tip && this.dom.curiosityPill) {
                 this.dom.curiosityPill.innerHTML = `💡 <strong>Dica Pedagógica:</strong> ${current.tip}`;
                 this.dom.curiosityPill.classList.remove('d-none');
-            } else {
+            } else if (this.dom.curiosityPill) {
                 this.dom.curiosityPill.classList.add('d-none');
             }
         }
     }
 
     flashScreen(type) {
+        this.ensureDom();
         const cls = type === 'correct' ? 'flash-correct' : 'flash-skip';
-        this.dom.body.classList.add(cls);
-        setTimeout(() => this.dom.body.classList.remove(cls), 200);
+        if (this.dom.body) {
+            this.dom.body.classList.add(cls);
+            setTimeout(() => this.dom.body.classList.remove(cls), 200);
+        }
     }
 
     handleCorrect() {
@@ -188,27 +194,23 @@ class GameEngine {
         this.state.streak++;
         const currentTeamKey = this.state.currentTeam;
         
-        // Atualiza maior sequência
         if (this.state.streak > this.state.maxStreak[currentTeamKey]) {
             this.state.maxStreak[currentTeamKey] = this.state.streak;
         }
 
-        // Cálculo de pontuação baseado no modo (MDA Framework)
         let pointsEarned = 10;
         if (this.config.gameMode === 'combo_streak' && this.state.streak > 1) {
-            pointsEarned += (this.state.streak - 1) * 5; // Bônus de combo
+            pointsEarned += (this.state.streak - 1) * 5;
         }
 
-        // No modo Speed Rush, ganha tempo extra
         if (this.config.gameMode === 'speed_rush') {
             this.state.timeLeft = Math.min(120, this.state.timeLeft + 3);
-            this.dom.timer.textContent = this.state.timeLeft;
+            if (this.dom.timer) this.dom.timer.textContent = this.state.timeLeft;
         }
 
         this.state.scores[currentTeamKey].correct++;
         this.state.scores[currentTeamKey].points += pointsEarned;
 
-        // Áudio e Visual
         if (this.state.streak >= 3) {
             window.soundEngine.playCombo();
             this.triggerSmallConfetti();
@@ -227,7 +229,7 @@ class GameEngine {
     handleSkip() {
         if (!this.state.isRunning || this.state.isGameOver) return;
 
-        this.state.streak = 0; // Zera o combo
+        this.state.streak = 0;
         this.state.scores[this.state.currentTeam].skips++;
 
         window.soundEngine.playSkip();
@@ -239,6 +241,9 @@ class GameEngine {
     }
 
     updateStreakDisplay() {
+        this.ensureDom();
+        if (!this.dom.streakBadge || !this.dom.streakCount) return;
+
         if (this.state.streak >= 2 && this.config.gameMode === 'combo_streak') {
             this.dom.streakCount.textContent = `${this.state.streak}x`;
             this.dom.streakBadge.classList.remove('d-none');
@@ -250,39 +255,43 @@ class GameEngine {
 
     toggleStartPause() {
         if (this.state.isGameOver) return;
+        this.ensureDom();
         window.soundEngine.init();
 
         if (this.state.isRunning) {
-            // Pausar
             clearInterval(this.state.timerInterval);
             this.state.isRunning = false;
-            this.dom.statusBadge.textContent = 'PAUSADO';
-            this.dom.statusBadge.className = 'badge bg-warning text-dark fs-5 align-self-center';
+            if (this.dom.statusBadge) {
+                this.dom.statusBadge.textContent = 'PAUSADO';
+                this.dom.statusBadge.className = 'badge bg-warning text-dark fs-5 align-self-center';
+            }
         } else {
-            // Iniciar
             if (this.state.timeLeft <= 0) {
                 this.state.timeLeft = this.config.roundDuration;
-                this.dom.timer.textContent = this.state.timeLeft;
+                if (this.dom.timer) this.dom.timer.textContent = this.state.timeLeft;
             }
 
             this.state.isRunning = true;
             const team = this.state.currentTeam === 'A' ? this.config.teamA : this.config.teamB;
-            this.dom.statusBadge.textContent = `VEZ DE: ${team.avatar} ${team.name.toUpperCase()}`;
-            this.dom.statusBadge.className = 'badge bg-success fs-5 align-self-center';
+            if (this.dom.statusBadge) {
+                this.dom.statusBadge.textContent = `VEZ DE: ${team.avatar} ${team.name.toUpperCase()}`;
+                this.dom.statusBadge.className = 'badge bg-success fs-5 align-self-center';
+            }
             this.renderCurrentWord();
-            this.dom.feedback.textContent = 'Turma: Dê dicas sem falar a palavra!';
+            if (this.dom.feedback) this.dom.feedback.textContent = 'Turma: Dê dicas sem falar a palavra!';
 
             this.state.timerInterval = setInterval(() => {
                 this.state.timeLeft--;
-                this.dom.timer.textContent = this.state.timeLeft;
-
-                if (this.state.timeLeft <= 10 && this.state.timeLeft > 0) {
-                    this.dom.timer.classList.add('text-danger');
-                    this.dom.timer.classList.remove('text-warning');
-                    window.soundEngine.playWarning();
-                } else {
-                    this.dom.timer.classList.add('text-warning');
-                    this.dom.timer.classList.remove('text-danger');
+                if (this.dom.timer) {
+                    this.dom.timer.textContent = this.state.timeLeft;
+                    if (this.state.timeLeft <= 10 && this.state.timeLeft > 0) {
+                        this.dom.timer.classList.add('text-danger');
+                        this.dom.timer.classList.remove('text-warning');
+                        window.soundEngine.playWarning();
+                    } else {
+                        this.dom.timer.classList.add('text-warning');
+                        this.dom.timer.classList.remove('text-danger');
+                    }
                 }
 
                 if (this.state.timeLeft <= 0) {
@@ -298,54 +307,63 @@ class GameEngine {
         this.state.streak = 0;
         this.updateStreakDisplay();
         window.soundEngine.playTimeout();
+        this.ensureDom();
 
-        this.dom.statusBadge.textContent = 'TEMPO ESGOTADO!';
-        this.dom.statusBadge.className = 'badge bg-danger fs-5 align-self-center';
-        this.dom.word.textContent = 'FIM DO TURNO!';
+        if (this.dom.statusBadge) {
+            this.dom.statusBadge.textContent = 'TEMPO ESGOTADO!';
+            this.dom.statusBadge.className = 'badge bg-danger fs-5 align-self-center';
+        }
+        if (this.dom.word) this.dom.word.textContent = 'FIM DO TURNO!';
 
         if (this.state.currentTeam === 'A') {
-            // Transição para Equipe B
-            this.dom.category.textContent = `Próximo turno: ${this.config.teamB.avatar} ${this.config.teamB.name}`;
-            this.dom.feedback.textContent = `Troque o aluno na cadeira quente. Pressione ESPAÇO para começar!`;
+            if (this.dom.category) this.dom.category.textContent = `Próximo turno: ${this.config.teamB.avatar} ${this.config.teamB.name}`;
+            if (this.dom.feedback) this.dom.feedback.textContent = `Troque o aluno na cadeira quente. Pressione ESPAÇO para começar!`;
             this.setTeam('B');
         } else {
-            // Conclusão da Rodada
             if (this.state.currentRound < this.config.totalRounds) {
                 this.state.currentRound++;
-                this.dom.currentRoundNum.textContent = this.state.currentRound;
-                this.dom.category.textContent = `Rodada ${this.state.currentRound} de ${this.config.totalRounds}!`;
-                this.dom.feedback.textContent = `Vez de ${this.config.teamA.avatar} ${this.config.teamA.name}. Pressione ESPAÇO!`;
+                if (this.dom.currentRoundNum) this.dom.currentRoundNum.textContent = this.state.currentRound;
+                if (this.dom.category) this.dom.category.textContent = `Rodada ${this.state.currentRound} de ${this.config.totalRounds}!`;
+                if (this.dom.feedback) this.dom.feedback.textContent = `Vez de ${this.config.teamA.avatar} ${this.config.teamA.name}. Pressione ESPAÇO!`;
                 this.setTeam('A');
             } else {
-                // Todas as rodadas concluídas!
                 this.endGame();
                 return;
             }
         }
 
         this.state.timeLeft = this.config.roundDuration;
-        this.dom.timer.textContent = this.state.timeLeft;
+        if (this.dom.timer) this.dom.timer.textContent = this.state.timeLeft;
     }
 
     setTeam(team) {
+        this.ensureDom();
         this.state.currentTeam = team;
         this.state.streak = 0;
         this.updateStreakDisplay();
 
         if (team === 'A') {
-            this.dom.teamACard.classList.add('active-team');
-            this.dom.teamBCard.classList.remove('active-team');
-            this.dom.teamATurnStatus.textContent = 'TURNO ATUAL';
-            this.dom.teamATurnStatus.className = 'mt-2 small text-warning fw-bold';
-            this.dom.teamBTurnStatus.textContent = 'AGUARDANDO';
-            this.dom.teamBTurnStatus.className = 'mt-2 small text-white-50';
+            if (this.dom.teamACard) this.dom.teamACard.classList.add('active-team');
+            if (this.dom.teamBCard) this.dom.teamBCard.classList.remove('active-team');
+            if (this.dom.teamATurnStatus) {
+                this.dom.teamATurnStatus.textContent = 'TURNO ATUAL';
+                this.dom.teamATurnStatus.className = 'mt-2 small text-warning fw-bold';
+            }
+            if (this.dom.teamBTurnStatus) {
+                this.dom.teamBTurnStatus.textContent = 'AGUARDANDO';
+                this.dom.teamBTurnStatus.className = 'mt-2 small text-white-50';
+            }
         } else {
-            this.dom.teamBCard.classList.add('active-team');
-            this.dom.teamACard.classList.remove('active-team');
-            this.dom.teamBTurnStatus.textContent = 'TURNO ATUAL';
-            this.dom.teamBTurnStatus.className = 'mt-2 small text-warning fw-bold';
-            this.dom.teamATurnStatus.textContent = 'AGUARDANDO';
-            this.dom.teamATurnStatus.className = 'mt-2 small text-white-50';
+            if (this.dom.teamBCard) this.dom.teamBCard.classList.add('active-team');
+            if (this.dom.teamACard) this.dom.teamACard.classList.remove('active-team');
+            if (this.dom.teamBTurnStatus) {
+                this.dom.teamBTurnStatus.textContent = 'TURNO ATUAL';
+                this.dom.teamBTurnStatus.className = 'mt-2 small text-warning fw-bold';
+            }
+            if (this.dom.teamATurnStatus) {
+                this.dom.teamATurnStatus.textContent = 'AGUARDANDO';
+                this.dom.teamATurnStatus.className = 'mt-2 small text-white-50';
+            }
         }
     }
 
@@ -353,10 +371,11 @@ class GameEngine {
         if (this.state.isRunning || this.state.isGameOver) return;
         this.setTeam(this.state.currentTeam === 'A' ? 'B' : 'A');
         const active = this.state.currentTeam === 'A' ? this.config.teamA : this.config.teamB;
-        this.dom.statusBadge.textContent = `PREPARADO: ${active.name.toUpperCase()}`;
+        if (this.dom.statusBadge) this.dom.statusBadge.textContent = `PREPARADO: ${active.name.toUpperCase()}`;
     }
 
     endGame() {
+        this.ensureDom();
         this.state.isGameOver = true;
         clearInterval(this.state.timerInterval);
         window.soundEngine.playFanfare();
@@ -367,49 +386,59 @@ class GameEngine {
         const hitsA = this.state.scores.A.correct;
         const hitsB = this.state.scores.B.correct;
 
-        this.dom.winnerTeamAPts.textContent = ptsA;
-        this.dom.winnerTeamBPts.textContent = ptsB;
-        this.dom.winnerScoreTeamALabel.textContent = `${this.config.teamA.avatar} ${this.config.teamA.name}`;
-        this.dom.winnerScoreTeamBLabel.textContent = `${this.config.teamB.avatar} ${this.config.teamB.name}`;
+        if (this.dom.winnerTeamAPts) this.dom.winnerTeamAPts.textContent = ptsA;
+        if (this.dom.winnerTeamBPts) this.dom.winnerTeamBPts.textContent = ptsB;
+        if (this.dom.winnerScoreTeamALabel) this.dom.winnerScoreTeamALabel.textContent = `${this.config.teamA.avatar} ${this.config.teamA.name}`;
+        if (this.dom.winnerScoreTeamBLabel) this.dom.winnerScoreTeamBLabel.textContent = `${this.config.teamB.avatar} ${this.config.teamB.name}`;
 
-        if (ptsA > ptsB) {
-            this.dom.winnerTeamName.textContent = `🏆 ${this.config.teamA.name.toUpperCase()} CAMPEÃ!`;
-            this.dom.winnerTeamName.className = 'display-6 fw-bold text-primary mb-3';
-        } else if (ptsB > ptsA) {
-            this.dom.winnerTeamName.textContent = `🏆 ${this.config.teamB.name.toUpperCase()} CAMPEÃ!`;
-            this.dom.winnerTeamName.className = 'display-6 fw-bold text-danger mb-3';
-        } else {
-            this.dom.winnerTeamName.textContent = '🤝 EMPATE HISTÓRICO!';
-            this.dom.winnerTeamName.className = 'display-6 fw-bold text-warning mb-3';
+        if (this.dom.winnerTeamName) {
+            if (ptsA > ptsB) {
+                this.dom.winnerTeamName.textContent = `🏆 ${this.config.teamA.name.toUpperCase()} CAMPEÃ!`;
+                this.dom.winnerTeamName.className = 'display-6 fw-bold text-primary mb-3';
+            } else if (ptsB > ptsA) {
+                this.dom.winnerTeamName.textContent = `🏆 ${this.config.teamB.name.toUpperCase()} CAMPEÃ!`;
+                this.dom.winnerTeamName.className = 'display-6 fw-bold text-danger mb-3';
+            } else {
+                this.dom.winnerTeamName.textContent = '🤝 EMPATE HISTÓRICO!';
+                this.dom.winnerTeamName.className = 'display-6 fw-bold text-warning mb-3';
+            }
         }
 
-        this.dom.winnerDetails.innerHTML = `
-            <div class="small text-white-50 mb-1">Estatísticas Finais da Partida:</div>
-            <div class="d-flex justify-content-around text-light small">
-                <div><strong>${this.config.teamA.name}:</strong> ${hitsA} acertos | Combo Máx: ${this.state.maxStreak.A}x</div>
-                <div><strong>${this.config.teamB.name}:</strong> ${hitsB} acertos | Combo Máx: ${this.state.maxStreak.B}x</div>
-            </div>
-        `;
+        if (this.dom.winnerDetails) {
+            this.dom.winnerDetails.innerHTML = `
+                <div class="small text-white-50 mb-1">Estatísticas Finais da Partida:</div>
+                <div class="d-flex justify-content-around text-light small">
+                    <div><strong>${this.config.teamA.name}:</strong> ${hitsA} acertos | Combo Máx: ${this.state.maxStreak.A}x</div>
+                    <div><strong>${this.config.teamB.name}:</strong> ${hitsB} acertos | Combo Máx: ${this.state.maxStreak.B}x</div>
+                </div>
+            `;
+        }
 
-        const modal = new bootstrap.Modal(this.dom.winnerModalEl);
-        modal.show();
+        if (this.dom.winnerModalEl && typeof bootstrap !== 'undefined') {
+            const modal = new bootstrap.Modal(this.dom.winnerModalEl);
+            modal.show();
+        }
     }
 
     updateScoresDisplay() {
-        this.dom.teamAScore.textContent = this.state.scores.A.points;
-        this.dom.teamBScore.textContent = this.state.scores.B.points;
+        this.ensureDom();
+        if (this.dom.teamAScore) this.dom.teamAScore.textContent = this.state.scores.A.points;
+        if (this.dom.teamBScore) this.dom.teamBScore.textContent = this.state.scores.B.points;
     }
 
     resetGame(fullReset = true) {
+        this.ensureDom();
         clearInterval(this.state.timerInterval);
         this.state.isRunning = false;
         this.state.isGameOver = false;
         this.state.streak = 0;
         this.state.timeLeft = this.config.roundDuration;
 
-        this.dom.timer.textContent = this.state.timeLeft;
-        this.dom.timer.classList.add('text-warning');
-        this.dom.timer.classList.remove('text-danger');
+        if (this.dom.timer) {
+            this.dom.timer.textContent = this.state.timeLeft;
+            this.dom.timer.classList.add('text-warning');
+            this.dom.timer.classList.remove('text-danger');
+        }
 
         if (fullReset) {
             this.state.currentRound = 1;
@@ -422,13 +451,15 @@ class GameEngine {
         }
 
         this.updateStreakDisplay();
-        this.dom.currentRoundNum.textContent = this.state.currentRound;
-        this.dom.statusBadge.textContent = 'AGUARDANDO';
-        this.dom.statusBadge.className = 'badge bg-secondary fs-5 align-self-center';
-        this.dom.word.textContent = 'QUEM SOU EU?';
-        this.dom.category.textContent = 'Pressione ESPAÇO para Iniciar';
-        this.dom.feedback.textContent = 'Turma: Dê dicas sem falar a palavra misteriosa!';
-        this.dom.curiosityPill.classList.add('d-none');
+        if (this.dom.currentRoundNum) this.dom.currentRoundNum.textContent = this.state.currentRound;
+        if (this.dom.statusBadge) {
+            this.dom.statusBadge.textContent = 'AGUARDANDO';
+            this.dom.statusBadge.className = 'badge bg-secondary fs-5 align-self-center';
+        }
+        if (this.dom.word) this.dom.word.textContent = 'QUEM SOU EU?';
+        if (this.dom.category) this.dom.category.textContent = 'Pressione ESPAÇO para Iniciar';
+        if (this.dom.feedback) this.dom.feedback.textContent = 'Turma: Dê dicas sem falar a palavra misteriosa!';
+        if (this.dom.curiosityPill) this.dom.curiosityPill.classList.add('d-none');
     }
 
     triggerSmallConfetti() {
@@ -452,7 +483,6 @@ class GameEngine {
     }
 
     bindEvents() {
-        // Teclas de Atalho
         window.addEventListener('keydown', (e) => {
             const isModalOpen = document.body.classList.contains('modal-open');
             const isInput = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName);
@@ -496,9 +526,8 @@ class GameEngine {
 
 window.gameEngine = new GameEngine();
 
-// Inicializar após carregamento dos scripts
 window.addEventListener('DOMContentLoaded', () => {
     window.themeManager.init();
-    window.deckBuilder.init();
     window.gameEngine.init();
+    window.deckBuilder.init();
 });

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quem-sou-eu-ghpages-v1';
+const CACHE_NAME = 'quem-sou-eu-ghpages-v2';
 const ASSETS = [
     './',
     './index.html',
@@ -19,7 +19,7 @@ const ASSETS = [
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log('[Service Worker] Cacheando assets para GitHub Pages');
+            console.log('[Service Worker] Cacheando assets para GitHub Pages v2');
             return cache.addAll(ASSETS).catch(err => console.warn('Erro ao salvar assets no cache:', err));
         })
     );
@@ -32,6 +32,7 @@ self.addEventListener('activate', (event) => {
             return Promise.all(
                 keys.map((key) => {
                     if (key !== CACHE_NAME) {
+                        console.log('[Service Worker] Removendo cache antigo:', key);
                         return caches.delete(key);
                     }
                 })
