@@ -2,7 +2,7 @@
   "name": "Quem Sou Eu? - Cadeira Quente Educacional",
   "short_name": "QuemSouEu",
   "description": "Jogo educativo gamificado estilo Cadeira Quente para Projetores em Sala de Aula (História, Geografia, Ciências, Literatura, Matemática e Tecnologia)",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#0a0e17",
   "theme_color": "#0d6efd",

@@ -11,8 +11,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     
     <!-- Custom Theme & Projector CSS -->
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="manifest" href="./manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body class="d-flex flex-column justify-content-between p-2 p-md-3">
 
@@ -400,21 +400,17 @@
     <!-- Scripts: Bootstrap Bundle, Confetti & Módulos SPA -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <script src="./js/audio.js"></script>
-    <script src="./js/themeManager.js"></script>
-    <script src="./js/decks.js"></script>
-    <script src="./js/shareManager.js"></script>
-    <script src="./js/deckBuilder.js"></script>
-    <script src="./js/game.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/themeManager.js"></script>
+    <script src="js/decks.js"></script>
+    <script src="js/shareManager.js"></script>
+    <script src="js/deckBuilder.js"></script>
+    <script src="js/game.js"></script>
 
     <script>
-        // PWA Service Worker com caminho relativo para GitHub Pages
+        // PWA Service Worker
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('✅ PWA Service Worker ativo:', reg.scope))
-                    .catch(err => console.warn('PWA SW offline:', err));
-            });
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
         }
     </script>
 </body>

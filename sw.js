@@ -1,15 +1,15 @@
-const CACHE_NAME = 'quem-sou-eu-v3';
+const CACHE_NAME = 'quem-sou-eu-ghpages-v1';
 const ASSETS = [
-    '/',
-    '/index.html',
-    '/css/style.css',
-    '/js/audio.js',
-    '/js/themeManager.js',
-    '/js/decks.js',
-    '/js/shareManager.js',
-    '/js/deckBuilder.js',
-    '/js/game.js',
-    '/manifest.json',
+    './',
+    './index.html',
+    './css/style.css',
+    './js/audio.js',
+    './js/themeManager.js',
+    './js/decks.js',
+    './js/shareManager.js',
+    './js/deckBuilder.js',
+    './js/game.js',
+    './manifest.json',
     'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
     'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css',
     'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
@@ -19,7 +19,7 @@ const ASSETS = [
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log('[Service Worker] Cacheando assets da aplicação multi-disciplinar');
+            console.log('[Service Worker] Cacheando assets para GitHub Pages');
             return cache.addAll(ASSETS).catch(err => console.warn('Erro ao salvar assets no cache:', err));
         })
     );

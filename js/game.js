@@ -1,10 +1,6 @@
 /**
  * Quem Sou Eu? - Core Game Engine (Multi-Disciplinary Edition)
- * Inspirado nos princípios arquiteturais do QuizMaster:
- * - Framework MDA (Mechanics, Dynamics, Aesthetics)
- * - Modos de Pontuação (Clássico, Combos & Streaks 🔥, Corrida contra o Tempo ⚡)
- * - Pílulas de Curiosidade Pedagógica
- * - Navegação SPA entre Arena de Jogo e Biblioteca de Baralhos
+ * 100% Offline SPA para GitHub Pages
  */
 
 class GameEngine {
@@ -12,20 +8,18 @@ class GameEngine {
         this.deck = [];
         this.currentIndex = 0;
         
-        // Configurações da Partida
         this.config = {
             totalRounds: 3,
             roundDuration: 60,
-            gameMode: 'combo_streak', // 'classic', 'combo_streak', 'speed_rush'
+            gameMode: 'combo_streak',
             showPedagogicalPill: true,
             teamA: { name: 'Equipe Alpha', avatar: '🚀' },
             teamB: { name: 'Equipe Beta', avatar: '🦁' }
         };
 
-        // Estado da Partida
         this.state = {
             currentRound: 1,
-            currentTeam: 'A', // 'A' ou 'B'
+            currentTeam: 'A',
             timeLeft: 60,
             timerInterval: null,
             isRunning: false,
@@ -54,7 +48,6 @@ class GameEngine {
             viewGame: document.getElementById('view-game-arena'),
             viewDecks: document.getElementById('view-decks-library'),
             
-            // Arena
             timer: document.getElementById('timer'),
             word: document.getElementById('mystery-word'),
             category: document.getElementById('word-category'),
@@ -67,7 +60,6 @@ class GameEngine {
             totalRoundsNum: document.getElementById('total-rounds-num'),
             gameModeBadge: document.getElementById('game-mode-badge'),
             
-            // Placar Equipes
             teamAScore: document.getElementById('team-a-score'),
             teamBScore: document.getElementById('team-b-score'),
             teamACard: document.getElementById('team-a-card'),
@@ -77,7 +69,6 @@ class GameEngine {
             teamATurnStatus: document.getElementById('team-a-turn-status'),
             teamBTurnStatus: document.getElementById('team-b-turn-status'),
 
-            // Modais
             winnerModalEl: document.getElementById('winnerModal'),
             winnerTeamName: document.getElementById('winner-team-name'),
             winnerTeamAPts: document.getElementById('winner-team-a-pts'),
@@ -119,7 +110,6 @@ class GameEngine {
         this.currentIndex = 0;
     }
 
-    // Navegação SPA de Telas
     showView(viewName) {
         if (viewName === 'decks') {
             if (this.state.isRunning) this.toggleStartPause();
@@ -138,7 +128,6 @@ class GameEngine {
         this.dom.teamANameBadge.innerHTML = `${this.config.teamA.avatar} ${this.config.teamA.name}`;
         this.dom.teamBNameBadge.innerHTML = `${this.config.teamB.avatar} ${this.config.teamB.name}`;
 
-        // Modo de Jogo Badge
         const modesMap = {
             'classic': '🎯 Modo Clássico',
             'combo_streak': '🔥 Modo Combo / Streaks',
@@ -166,7 +155,6 @@ class GameEngine {
             this.dom.word.textContent = current.word;
             this.dom.category.textContent = current.category || 'Geral';
             
-            // Pílula pedagógica
             if (this.config.showPedagogicalPill && current.tip) {
                 this.dom.curiosityPill.innerHTML = `💡 <strong>Dica Pedagógica:</strong> ${current.tip}`;
                 this.dom.curiosityPill.classList.remove('d-none');
@@ -188,18 +176,15 @@ class GameEngine {
         this.state.streak++;
         const currentTeamKey = this.state.currentTeam;
         
-        // Atualiza maior sequência
         if (this.state.streak > this.state.maxStreak[currentTeamKey]) {
             this.state.maxStreak[currentTeamKey] = this.state.streak;
         }
 
-        // Cálculo de pontuação baseado no modo (MDA Framework)
         let pointsEarned = 10;
         if (this.config.gameMode === 'combo_streak' && this.state.streak > 1) {
-            pointsEarned += (this.state.streak - 1) * 5; // Bônus de combo
+            pointsEarned += (this.state.streak - 1) * 5;
         }
 
-        // No modo Speed Rush, ganha tempo extra
         if (this.config.gameMode === 'speed_rush') {
             this.state.timeLeft = Math.min(120, this.state.timeLeft + 3);
             this.dom.timer.textContent = this.state.timeLeft;
@@ -208,7 +193,6 @@ class GameEngine {
         this.state.scores[currentTeamKey].correct++;
         this.state.scores[currentTeamKey].points += pointsEarned;
 
-        // Áudio e Visual
         if (this.state.streak >= 3) {
             window.soundEngine.playCombo();
             this.triggerSmallConfetti();
@@ -227,7 +211,7 @@ class GameEngine {
     handleSkip() {
         if (!this.state.isRunning || this.state.isGameOver) return;
 
-        this.state.streak = 0; // Zera o combo
+        this.state.streak = 0;
         this.state.scores[this.state.currentTeam].skips++;
 
         window.soundEngine.playSkip();
@@ -253,13 +237,11 @@ class GameEngine {
         window.soundEngine.init();
 
         if (this.state.isRunning) {
-            // Pausar
             clearInterval(this.state.timerInterval);
             this.state.isRunning = false;
             this.dom.statusBadge.textContent = 'PAUSADO';
             this.dom.statusBadge.className = 'badge bg-warning text-dark fs-5 align-self-center';
         } else {
-            // Iniciar
             if (this.state.timeLeft <= 0) {
                 this.state.timeLeft = this.config.roundDuration;
                 this.dom.timer.textContent = this.state.timeLeft;
@@ -304,12 +286,10 @@ class GameEngine {
         this.dom.word.textContent = 'FIM DO TURNO!';
 
         if (this.state.currentTeam === 'A') {
-            // Transição para Equipe B
             this.dom.category.textContent = `Próximo turno: ${this.config.teamB.avatar} ${this.config.teamB.name}`;
             this.dom.feedback.textContent = `Troque o aluno na cadeira quente. Pressione ESPAÇO para começar!`;
             this.setTeam('B');
         } else {
-            // Conclusão da Rodada
             if (this.state.currentRound < this.config.totalRounds) {
                 this.state.currentRound++;
                 this.dom.currentRoundNum.textContent = this.state.currentRound;
@@ -317,7 +297,6 @@ class GameEngine {
                 this.dom.feedback.textContent = `Vez de ${this.config.teamA.avatar} ${this.config.teamA.name}. Pressione ESPAÇO!`;
                 this.setTeam('A');
             } else {
-                // Todas as rodadas concluídas!
                 this.endGame();
                 return;
             }
@@ -452,7 +431,6 @@ class GameEngine {
     }
 
     bindEvents() {
-        // Teclas de Atalho
         window.addEventListener('keydown', (e) => {
             const isModalOpen = document.body.classList.contains('modal-open');
             const isInput = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName);
@@ -496,7 +474,6 @@ class GameEngine {
 
 window.gameEngine = new GameEngine();
 
-// Inicializar após carregamento dos scripts
 window.addEventListener('DOMContentLoaded', () => {
     window.themeManager.init();
     window.deckBuilder.init();
