@@ -23,46 +23,30 @@
     <!-- ======================================================
          BARRA SUPERIOR LIMPA: BRAND, CRONÔMETRO & MENU TOGGLE
     ====================================================== -->
-    <header class="main-navbar px-3 py-2 shadow-sm">
-        <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <header class="main-navbar px-2 px-md-3 py-2 shadow-sm">
+        <div class="container-fluid d-flex justify-content-between align-items-center flex-nowrap gap-2">
             
-            <!-- Marca & Seletor de Baralho -->
+            <!-- Marca Quem Sou Master -->
             <div class="d-flex align-items-center gap-2">
-                <a href="#" class="d-flex align-items-center text-decoration-none text-light me-1" onclick="gameEngine.showView('game')">
-                    <img src="./favicon.png" alt="Logo Quem Sou Master" width="32" height="32" class="rounded-circle me-2 border border-warning shadow-sm">
-                    <span class="fw-bolder fs-5 text-light tracking-wide d-none d-sm-inline">Quem Sou <span class="text-warning">Master</span></span>
+                <a href="#" class="d-flex align-items-center text-decoration-none text-light" onclick="gameEngine.showView('game')">
+                    <img src="./favicon.png" alt="Logo Quem Sou Master" width="34" height="34" class="rounded-circle me-2 border border-warning shadow-sm">
+                    <span class="fw-bolder fs-5 text-light tracking-wide">Quem Sou <span class="text-warning">Master</span></span>
                 </a>
-
-                <div class="d-flex align-items-center bg-dark bg-opacity-75 border border-secondary rounded-pill px-2 py-1 cursor-pointer" onclick="gameEngine.showView('decks')" title="Trocar baralho">
-                    <span class="badge bg-primary rounded-pill me-1 d-none d-md-inline" id="round-indicator">
-                        <i class="bi bi-flag-fill"></i> <span id="current-round-num">1</span>/<span id="total-rounds-num">3</span>
-                    </span>
-                    <span class="small text-warning fw-bold text-truncate" style="max-width: 160px;" id="active-deck-indicator">
-                        <i class="bi bi-collection-play me-1"></i> Carregando...
-                    </span>
-                </div>
-
                 <span class="badge bg-danger rounded-pill px-2 py-1 d-none" id="streak-indicator">
                     🔥 <span id="streak-count">2x</span>
                 </span>
             </div>
 
             <!-- Cronômetro Central Flutuante -->
-            <div class="d-flex align-items-center gap-2 bg-dark bg-opacity-75 px-3 py-1 rounded-4 border border-secondary shadow-sm">
-                <i class="bi bi-clock-history fs-3 text-warning"></i>
+            <div class="d-flex align-items-center gap-2 bg-dark bg-opacity-75 px-3 py-1 rounded-pill border border-secondary shadow-sm">
+                <i class="bi bi-clock-history fs-4 text-warning"></i>
                 <div id="timer" class="timer-display text-warning font-monospace">60</div>
-                <span id="game-status-badge" class="badge bg-secondary fs-6 align-self-center d-none d-md-inline">AGUARDANDO</span>
+                <span id="game-status-badge" class="badge bg-secondary fs-6 align-self-center d-none d-sm-inline">AGUARDANDO</span>
             </div>
 
-            <!-- Botões Diretos + Botão Menu Toggle -->
-            <div class="d-flex align-items-center gap-2">
-                <button class="btn btn-outline-info btn-sm fw-bold px-3 py-1 rounded-pill d-none d-lg-inline-flex align-items-center gap-1" onclick="gameEngine.showView('decks')">
-                    <i class="bi bi-collection-fill"></i> Baralhos
-                </button>
-                <button class="btn btn-outline-warning btn-sm fw-bold px-3 py-1 rounded-pill d-none d-lg-inline-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#configModal">
-                    <i class="bi bi-sliders"></i> Ajustes
-                </button>
-                <button class="btn btn-outline-light rounded-pill px-3 py-1 d-flex align-items-center gap-2 fw-bold shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+            <!-- Botão Único Menu Toggle -->
+            <div>
+                <button class="btn btn-outline-light rounded-pill px-3 py-1.5 d-flex align-items-center gap-2 fw-bold shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
                     <i class="bi bi-list fs-5"></i>
                     <span>Menu</span>
                 </button>
@@ -78,8 +62,26 @@
         
         <section id="view-game-arena" class="row align-items-center justify-content-center g-3 my-auto">
             
-            <!-- Placar Lateral Esquerdo: Equipe 1 -->
-            <div class="col-12 col-md-3 col-xl-2 order-2 order-md-1">
+            <!-- Placar Mobile (Visível apenas em telas pequenas < md) -->
+            <div class="col-12 d-flex d-md-none mobile-score-bar mb-1">
+                <div id="mobile-team-a-card" class="mobile-team-pill active-team">
+                    <div class="d-flex align-items-center gap-1 text-truncate">
+                        <span class="badge bg-primary rounded-pill p-1"><i class="bi bi-rocket-takeoff-fill"></i></span>
+                        <strong class="small text-truncate" id="mobile-team-a-name" style="max-width: 90px;">ALPHA</strong>
+                    </div>
+                    <span class="fs-5 font-monospace fw-bold text-primary" id="mobile-team-a-score">0</span>
+                </div>
+                <div id="mobile-team-b-card" class="mobile-team-pill">
+                    <div class="d-flex align-items-center gap-1 text-truncate">
+                        <span class="badge bg-danger rounded-pill p-1"><i class="bi bi-shield-fill"></i></span>
+                        <strong class="small text-truncate" id="mobile-team-b-name" style="max-width: 90px;">BETA</strong>
+                    </div>
+                    <span class="fs-5 font-monospace fw-bold text-danger" id="mobile-team-b-score">0</span>
+                </div>
+            </div>
+
+            <!-- Placar Lateral Esquerdo: Equipe 1 (Desktop / Projetor) -->
+            <div class="col-12 col-md-3 col-xl-2 d-none d-md-block">
                 <div id="team-a-card" class="team-card active-team p-3 text-center shadow">
                     <span id="team-a-name-badge" class="badge bg-primary fs-6 mb-1 text-uppercase text-truncate w-100">🚀 EQUIPE ALPHA</span>
                     <div id="team-a-score" class="score-num text-primary font-monospace">0</div>
@@ -89,7 +91,7 @@
             </div>
 
             <!-- Cartão Central da Palavra Misteriosa -->
-            <div class="col-12 col-md-6 col-xl-8 order-1 order-md-2 text-center">
+            <div class="col-12 col-md-6 col-xl-8 text-center">
                 <div class="arena-card p-3 p-md-4 p-lg-5 shadow-lg">
                     
                     <div class="d-flex justify-content-center align-items-center gap-2 mb-2 flex-wrap">
@@ -130,8 +132,8 @@
                 </div>
             </div>
 
-            <!-- Placar Lateral Direito: Equipe 2 -->
-            <div class="col-12 col-md-3 col-xl-2 order-3 order-md-3">
+            <!-- Placar Lateral Direito: Equipe 2 (Desktop / Projetor) -->
+            <div class="col-12 col-md-3 col-xl-2 d-none d-md-block">
                 <div id="team-b-card" class="team-card p-3 text-center shadow">
                     <span id="team-b-name-badge" class="badge bg-danger fs-6 mb-1 text-uppercase text-truncate w-100">🦁 EQUIPE BETA</span>
                     <div id="team-b-score" class="score-num text-danger font-monospace">0</div>
@@ -221,52 +223,117 @@
             </div>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
         </div>
-        <div class="offcanvas-body d-flex flex-column justify-content-between p-3">
-            <div class="d-flex flex-column gap-2">
-                
-                <button class="menu-item-btn" onclick="gameEngine.showView('game'); bootstrap.Offcanvas.getInstance(document.getElementById('sidebarMenu')).hide();">
-                    <i class="bi bi-play-circle-fill text-primary fs-5"></i>
-                    <span>Arena de Jogo</span>
-                </button>
+        <div class="offcanvas-body d-flex flex-column justify-content-between p-3 gap-3 overflow-y-auto">
+            
+            <div class="d-flex flex-column gap-3">
 
-                <button class="menu-item-btn" onclick="gameEngine.showView('decks'); bootstrap.Offcanvas.getInstance(document.getElementById('sidebarMenu')).hide();">
-                    <i class="bi bi-collection-fill text-info fs-5"></i>
-                    <span>Biblioteca de Baralhos</span>
-                </button>
+                <!-- 1. Informações da Partida & Baralho Ativo -->
+                <div class="offcanvas-card">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="small text-white-50 fw-bold text-uppercase"><i class="bi bi-info-circle me-1"></i>Informações da Partida</span>
+                        <span class="badge bg-primary rounded-pill" id="menu-round-badge">
+                            <i class="bi bi-flag-fill me-1"></i>Rodada <span id="current-round-num">1</span>/<span id="total-rounds-num">3</span>
+                        </span>
+                    </div>
 
-                <button class="menu-item-btn" onclick="deckBuilder.openCreateDeckModal(); bootstrap.Offcanvas.getInstance(document.getElementById('sidebarMenu')).hide();">
-                    <i class="bi bi-plus-circle-fill text-success fs-5"></i>
-                    <span>Criar Novo Baralho</span>
-                </button>
+                    <!-- Baralho Atual -->
+                    <div class="p-2 bg-dark bg-opacity-50 rounded-3 border border-secondary mb-2">
+                        <div class="small text-white-50 mb-1">Baralho em Jogo:</div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-truncate me-2">
+                                <h6 class="text-warning fw-bold mb-0 text-truncate" id="active-deck-indicator">
+                                    <i class="bi bi-collection-play me-1"></i> Carregando...
+                                </h6>
+                                <small class="text-muted" id="menu-deck-subinfo">Disciplina • 0 cartas</small>
+                            </div>
+                            <button class="btn btn-outline-info btn-sm rounded-pill fw-bold" onclick="gameEngine.showView('decks'); bootstrap.Offcanvas.getInstance(document.getElementById('sidebarMenu')).hide();">
+                                Trocar
+                            </button>
+                        </div>
+                    </div>
 
-                <hr class="border-secondary my-2">
+                    <!-- Modo & Status de Turno -->
+                    <div class="d-flex justify-content-between align-items-center small text-white-50 pt-1">
+                        <span>Modo: <strong class="text-light" id="menu-mode-text">Combos</strong></span>
+                        <span class="badge bg-warning text-dark fw-bold" id="menu-turn-badge">🚀 Vez de Alpha</span>
+                    </div>
+                </div>
 
-                <button class="menu-item-btn" data-bs-toggle="modal" data-bs-target="#configModal">
-                    <i class="bi bi-sliders text-warning fs-5"></i>
-                    <span>Ajustes da Partida</span>
-                </button>
+                <!-- 2. Placar ao Vivo no Menu -->
+                <div class="offcanvas-card">
+                    <div class="small text-white-50 fw-bold text-uppercase mb-2"><i class="bi bi-trophy me-1"></i>Placar da Partida</div>
+                    <div class="row g-2 text-center">
+                        <div class="col-6">
+                            <div class="p-2 bg-primary bg-opacity-25 border border-primary rounded-3">
+                                <div class="small text-primary fw-bold text-truncate" id="menu-score-name-a">🚀 Alpha</div>
+                                <div class="fs-4 fw-bolder font-monospace text-light" id="menu-score-a">0</div>
+                                <div class="text-white-50" style="font-size: 0.75rem;"><span id="menu-hits-a">0</span> acertos</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 bg-danger bg-opacity-25 border border-danger rounded-3">
+                                <div class="small text-danger fw-bold text-truncate" id="menu-score-name-b">🦁 Beta</div>
+                                <div class="fs-4 fw-bolder font-monospace text-light" id="menu-score-b">0</div>
+                                <div class="text-white-50" style="font-size: 0.75rem;"><span id="menu-hits-b">0</span> acertos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <button class="menu-item-btn" data-bs-toggle="modal" data-bs-target="#themeModal">
-                    <i class="bi bi-palette-fill text-info fs-5"></i>
-                    <span>Temas Visuais</span>
-                </button>
+                <!-- 3. Navegação Rápida -->
+                <div class="d-flex flex-column gap-2">
+                    <span class="small text-white-50 fw-bold text-uppercase ps-1"><i class="bi bi-compass me-1"></i>Navegação</span>
+                    
+                    <button class="menu-item-btn" onclick="gameEngine.showView('game'); bootstrap.Offcanvas.getInstance(document.getElementById('sidebarMenu')).hide();">
+                        <i class="bi bi-play-circle-fill text-primary fs-5"></i>
+                        <span>Arena do Jogo</span>
+                    </button>
 
-                <button class="menu-item-btn" data-bs-toggle="modal" data-bs-target="#rulesModal">
-                    <i class="bi bi-question-circle-fill text-light fs-5"></i>
-                    <span>Como Jogar (Regras)</span>
-                </button>
+                    <button class="menu-item-btn" onclick="gameEngine.showView('decks'); bootstrap.Offcanvas.getInstance(document.getElementById('sidebarMenu')).hide();">
+                        <i class="bi bi-collection-fill text-info fs-5"></i>
+                        <span>Biblioteca de Baralhos</span>
+                    </button>
 
-                <hr class="border-secondary my-2">
+                    <button class="menu-item-btn" onclick="deckBuilder.openCreateDeckModal(); bootstrap.Offcanvas.getInstance(document.getElementById('sidebarMenu')).hide();">
+                        <i class="bi bi-plus-circle-fill text-success fs-5"></i>
+                        <span>Criar Novo Baralho</span>
+                    </button>
+                </div>
 
-                <button class="menu-item-btn" onclick="gameEngine.toggleFullscreen();">
-                    <i class="bi bi-arrows-fullscreen text-light fs-5"></i>
-                    <span>Modo Tela Cheia (F)</span>
-                </button>
+                <!-- 4. Ajustes & Configurações -->
+                <div class="d-flex flex-column gap-2">
+                    <span class="small text-white-50 fw-bold text-uppercase ps-1"><i class="bi bi-gear me-1"></i>Configurações</span>
 
-                <button class="menu-item-btn" onclick="soundEngine.enabled = !soundEngine.enabled; alert(soundEngine.enabled ? '🔊 Sons Ativados' : '🔇 Sons Desativados');">
-                    <i class="bi bi-volume-up-fill text-light fs-5"></i>
-                    <span>Alternar Som (Mudo)</span>
-                </button>
+                    <button class="menu-item-btn" data-bs-toggle="modal" data-bs-target="#configModal">
+                        <i class="bi bi-sliders text-warning fs-5"></i>
+                        <span>Ajustes da Partida</span>
+                    </button>
+
+                    <button class="menu-item-btn" data-bs-toggle="modal" data-bs-target="#themeModal">
+                        <i class="bi bi-palette-fill text-info fs-5"></i>
+                        <span>Temas Visuais</span>
+                    </button>
+
+                    <button class="menu-item-btn" data-bs-toggle="modal" data-bs-target="#rulesModal">
+                        <i class="bi bi-question-circle-fill text-light fs-5"></i>
+                        <span>Como Jogar (Regras)</span>
+                    </button>
+
+                    <button class="menu-item-btn" onclick="gameEngine.toggleFullscreen();">
+                        <i class="bi bi-arrows-fullscreen text-light fs-5"></i>
+                        <span>Modo Tela Cheia (F)</span>
+                    </button>
+
+                    <button class="menu-item-btn" id="menu-sound-toggle-btn" onclick="gameEngine.toggleSound();">
+                        <i class="bi bi-volume-up-fill text-success fs-5" id="menu-sound-icon"></i>
+                        <span id="menu-sound-text">Sons Ativados</span>
+                    </button>
+
+                    <button class="menu-item-btn text-danger" onclick="if(confirm('Deseja reiniciar a partida atual?')) { gameEngine.resetGame(true); bootstrap.Offcanvas.getInstance(document.getElementById('sidebarMenu')).hide(); }">
+                        <i class="bi bi-arrow-counterclockwise fs-5"></i>
+                        <span>Reiniciar Partida</span>
+                    </button>
+                </div>
 
             </div>
 

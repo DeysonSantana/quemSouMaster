@@ -1,5 +1,5 @@
 /**
- * Quem Sou Eu? - Deck Builder & Library Manager
+ * Quem Sou Master - Deck Builder & Library Manager
  * Gerencia o catálogo de baralhos, criação e edição de baralhos customizados.
  */
 class DeckBuilder {
@@ -14,7 +14,6 @@ class DeckBuilder {
     init() {
         this.loadCustomDecks();
         
-        // Verificar se há deck vindo da URL hash
         const sharedDeck = window.shareManager.decodeDeckFromUrl();
         if (sharedDeck) {
             this.saveDeck(sharedDeck);
@@ -58,7 +57,6 @@ class DeckBuilder {
         this.activeDeck = deck;
         localStorage.setItem(this.selectedDeckKey, deck.id);
         
-        // Disparar evento para atualizar a Arena do Jogo
         if (window.gameEngine) {
             window.gameEngine.loadDeck(deck);
         }
@@ -71,6 +69,10 @@ class DeckBuilder {
         const badge = document.getElementById('active-deck-indicator');
         if (badge && this.activeDeck) {
             badge.innerHTML = `<i class="bi ${this.activeDeck.icon || 'bi-collection-play'} me-1"></i> ${this.activeDeck.title}`;
+        }
+        const subinfo = document.getElementById('menu-deck-subinfo');
+        if (subinfo && this.activeDeck) {
+            subinfo.textContent = `${this.activeDeck.discipline || 'Geral'} • ${this.activeDeck.cards ? this.activeDeck.cards.length : 0} cartas`;
         }
     }
 
@@ -149,7 +151,6 @@ class DeckBuilder {
         document.getElementById('deck-form-desc').value = deck.description || '';
         document.getElementById('deck-form-color').value = deck.color || '#0d6efd';
         
-        // Preenche o campo de texto com as cartas atuais
         const cardsText = deck.cards.map(c => `${c.word}, ${c.category || 'Geral'}, ${c.tip || ''}`).join('\n');
         document.getElementById('deck-cards-input').value = cardsText;
 
@@ -260,7 +261,6 @@ class DeckBuilder {
     }
 
     setupEventListeners() {
-        // Upload de arquivo CSV ou JSON
         const fileInput = document.getElementById('import-deck-file');
         if (fileInput) {
             fileInput.addEventListener('change', (e) => {
@@ -280,7 +280,6 @@ class DeckBuilder {
                                 alert(`✅ Baralho JSON "${parsed.title}" importado com sucesso!`);
                             }
                         } else {
-                            // CSV
                             const cards = window.shareManager.parseCsvText(content);
                             if (cards.length > 0) {
                                 const newDeck = {

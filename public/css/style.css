@@ -13,7 +13,7 @@
     --correct-flash: #198754;
     --skip-flash: #dc3545;
     --highlight: #00d2ff;
-    --nav-bg: rgba(13, 17, 23, 0.9);
+    --nav-bg: rgba(13, 17, 23, 0.95);
 }
 
 [data-theme="chalkboard"] {
@@ -26,7 +26,7 @@
     --correct-flash: #20c997;
     --skip-flash: #e63946;
     --highlight: #ffe066;
-    --nav-bg: rgba(19, 36, 27, 0.95);
+    --nav-bg: rgba(19, 36, 27, 0.98);
 }
 
 [data-theme="emerald"] {
@@ -39,7 +39,7 @@
     --correct-flash: #2b8a3e;
     --skip-flash: #c92a2a;
     --highlight: #69db7c;
-    --nav-bg: rgba(6, 30, 22, 0.95);
+    --nav-bg: rgba(6, 30, 22, 0.98);
 }
 
 [data-theme="sunset"] {
@@ -52,7 +52,7 @@
     --correct-flash: #37b24d;
     --skip-flash: #f03e3e;
     --highlight: #ff922b;
-    --nav-bg: rgba(31, 17, 36, 0.95);
+    --nav-bg: rgba(31, 17, 36, 0.98);
 }
 
 [data-theme="amoled"] {
@@ -78,7 +78,7 @@
     --correct-flash: #28a745;
     --skip-flash: #dc3545;
     --highlight: #0d6efd;
-    --nav-bg: rgba(255, 255, 255, 0.95);
+    --nav-bg: rgba(255, 255, 255, 0.98);
 }
 
 /* ======================================================
@@ -113,14 +113,14 @@ body.flash-skip {
 
 /* Tipografia Fluida & Responsiva */
 .timer-display {
-    font-size: clamp(2.6rem, 6vw, 5.5rem);
+    font-size: clamp(2rem, 4.5vw, 4.2rem);
     font-weight: 900;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     line-height: 1;
 }
 
 .word-display {
-    font-size: clamp(2.2rem, 5.2vw, 4.8rem);
+    font-size: clamp(2rem, 5.2vw, 4.8rem);
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -129,11 +129,11 @@ body.flash-skip {
 }
 
 .category-badge {
-    font-size: clamp(0.9rem, 1.4vw, 1.35rem);
-    letter-spacing: 1.2px;
+    font-size: clamp(0.85rem, 1.3vw, 1.25rem);
+    letter-spacing: 1px;
 }
 
-/* Cartões das Equipes */
+/* Cartões das Equipes Desktop */
 .team-card {
     background: var(--card-bg);
     border: 2px solid var(--card-border);
@@ -145,13 +145,38 @@ body.flash-skip {
 .team-card.active-team {
     border-color: #ffc107;
     background: rgba(255, 193, 7, 0.15);
-    box-shadow: 0 0 30px rgba(255, 193, 7, 0.4);
+    box-shadow: 0 0 25px rgba(255, 193, 7, 0.4);
     transform: scale(1.02);
 }
 
 .score-num {
-    font-size: clamp(2.2rem, 4vw, 3.8rem);
+    font-size: clamp(2.2rem, 3.8vw, 3.6rem);
     font-weight: 900;
+}
+
+/* Barra de Placar Mobile (Compacta & Lado a Lado) */
+.mobile-score-bar {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.mobile-team-pill {
+    flex: 1;
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 12px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+}
+
+.mobile-team-pill.active-team {
+    border-color: #ffc107;
+    background: rgba(255, 193, 7, 0.2);
+    box-shadow: 0 0 14px rgba(255, 193, 7, 0.4);
 }
 
 /* Cartão Central da Arena */
@@ -180,9 +205,9 @@ body.flash-skip {
     background: linear-gradient(45deg, #ff4500, #ff8c00);
     color: #ffffff;
     font-weight: 900;
-    padding: 5px 12px;
+    padding: 4px 10px;
     border-radius: 50px;
-    box-shadow: 0 0 20px rgba(255, 69, 0, 0.6);
+    box-shadow: 0 0 15px rgba(255, 69, 0, 0.6);
 }
 
 @keyframes pulseGlow {
@@ -199,8 +224,8 @@ body.flash-skip {
 .touch-control-btn {
     border-radius: 16px;
     font-weight: 800;
-    padding: 14px 20px;
-    font-size: clamp(1rem, 2.5vw, 1.35rem);
+    padding: 12px 18px;
+    font-size: clamp(0.95rem, 2.2vw, 1.25rem);
     transition: transform 0.1s active, box-shadow 0.2s ease;
 }
 
@@ -239,10 +264,19 @@ body.flash-skip {
     background-color: #0d121c;
     color: #f0f6fc;
     border-left: 1px solid rgba(255, 255, 255, 0.15);
+    max-width: 400px;
+    width: 90vw;
 }
 
 .offcanvas-header {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.offcanvas-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 14px;
 }
 
 .menu-item-btn {
@@ -250,7 +284,7 @@ body.flash-skip {
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #f0f6fc;
     border-radius: 12px;
-    padding: 12px 16px;
+    padding: 10px 14px;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -258,6 +292,7 @@ body.flash-skip {
     text-align: left;
     transition: all 0.2s ease;
     font-weight: 600;
+    font-size: 0.95rem;
 }
 
 .menu-item-btn:hover, .menu-item-btn:focus {
@@ -288,4 +323,31 @@ body.flash-skip {
     font-size: 4.5rem;
     color: #ffc107;
     animation: pulseGlow 1.5s infinite;
+}
+
+/* Otimizações Responsivas Mobile */
+@media (max-width: 576px) {
+    .main-navbar {
+        padding: 6px 10px !important;
+    }
+    
+    .timer-display {
+        font-size: 1.8rem;
+    }
+    
+    .arena-card {
+        padding: 1rem !important;
+        border-radius: 1rem;
+    }
+    
+    .word-display {
+        font-size: 2rem;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    .touch-control-btn {
+        padding: 10px 14px;
+        font-size: 0.95rem;
+        flex: 1 1 45%;
+    }
 }

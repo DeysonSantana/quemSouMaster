@@ -1,5 +1,5 @@
 /**
- * Quem Sou Eu? - Deck Builder & Library Manager
+ * Quem Sou Master - Deck Builder & Library Manager
  * Gerencia o catálogo de baralhos, criação e edição de baralhos customizados.
  */
 class DeckBuilder {
@@ -69,6 +69,10 @@ class DeckBuilder {
         const badge = document.getElementById('active-deck-indicator');
         if (badge && this.activeDeck) {
             badge.innerHTML = `<i class="bi ${this.activeDeck.icon || 'bi-collection-play'} me-1"></i> ${this.activeDeck.title}`;
+        }
+        const subinfo = document.getElementById('menu-deck-subinfo');
+        if (subinfo && this.activeDeck) {
+            subinfo.textContent = `${this.activeDeck.discipline || 'Geral'} • ${this.activeDeck.cards ? this.activeDeck.cards.length : 0} cartas`;
         }
     }
 

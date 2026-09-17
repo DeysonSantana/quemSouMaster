@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quem-sou-master-v3';
+const CACHE_NAME = 'quem-sou-master-v4';
 const ASSETS = [
     './',
     './index.html',
@@ -22,7 +22,7 @@ const ASSETS = [
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log('[Service Worker] Cacheando assets do Quem Sou Master v3');
+            console.log('[Service Worker] Cacheando assets do Quem Sou Master v4');
             return cache.addAll(ASSETS).catch(err => console.warn('Erro ao salvar assets no cache:', err));
         })
     );
@@ -48,7 +48,14 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
-            return cachedResponse || fetch(event.request);
+            if (cachedResponse) {
+                return cachedResponse;
+            }
+            return fetch(event.request).catch(() => {
+                if (event.request.mode === 'navigate') {
+                    return caches.match('./index.html');
+                }
+            });
         })
     );
 });

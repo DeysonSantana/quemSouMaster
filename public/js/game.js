@@ -1,5 +1,5 @@
 /**
- * Quem Sou Eu? - Core Game Engine (Multi-Disciplinary Edition)
+ * Quem Sou Master - Core Game Engine (Família Games Master)
  * 100% Offline SPA para GitHub Pages
  */
 
@@ -48,6 +48,7 @@ class GameEngine {
             viewGame: document.getElementById('view-game-arena'),
             viewDecks: document.getElementById('view-decks-library'),
             
+            // Header & Arena
             timer: document.getElementById('timer'),
             word: document.getElementById('mystery-word'),
             category: document.getElementById('word-category'),
@@ -60,6 +61,7 @@ class GameEngine {
             totalRoundsNum: document.getElementById('total-rounds-num'),
             gameModeBadge: document.getElementById('game-mode-badge'),
             
+            // Desktop Scores
             teamAScore: document.getElementById('team-a-score'),
             teamBScore: document.getElementById('team-b-score'),
             teamACard: document.getElementById('team-a-card'),
@@ -69,6 +71,27 @@ class GameEngine {
             teamATurnStatus: document.getElementById('team-a-turn-status'),
             teamBTurnStatus: document.getElementById('team-b-turn-status'),
 
+            // Mobile Scores
+            mobileTeamACard: document.getElementById('mobile-team-a-card'),
+            mobileTeamBCard: document.getElementById('mobile-team-b-card'),
+            mobileTeamAName: document.getElementById('mobile-team-a-name'),
+            mobileTeamBName: document.getElementById('mobile-team-b-name'),
+            mobileTeamAScore: document.getElementById('mobile-team-a-score'),
+            mobileTeamBScore: document.getElementById('mobile-team-b-score'),
+
+            // Menu Offcanvas Elements
+            menuModeText: document.getElementById('menu-mode-text'),
+            menuTurnBadge: document.getElementById('menu-turn-badge'),
+            menuScoreA: document.getElementById('menu-score-a'),
+            menuScoreB: document.getElementById('menu-score-b'),
+            menuHitsA: document.getElementById('menu-hits-a'),
+            menuHitsB: document.getElementById('menu-hits-b'),
+            menuScoreNameA: document.getElementById('menu-score-name-a'),
+            menuScoreNameB: document.getElementById('menu-score-name-b'),
+            menuSoundIcon: document.getElementById('menu-sound-icon'),
+            menuSoundText: document.getElementById('menu-sound-text'),
+
+            // Winner Modal
             winnerModalEl: document.getElementById('winnerModal'),
             winnerTeamName: document.getElementById('winner-team-name'),
             winnerTeamAPts: document.getElementById('winner-team-a-pts'),
@@ -132,22 +155,26 @@ class GameEngine {
 
     applyConfigToUI() {
         this.ensureDom();
-        if (!this.dom.totalRoundsNum) return;
-
-        this.dom.totalRoundsNum.textContent = this.config.totalRounds;
-        this.dom.currentRoundNum.textContent = this.state.currentRound;
+        if (this.dom.totalRoundsNum) this.dom.totalRoundsNum.textContent = this.config.totalRounds;
+        if (this.dom.currentRoundNum) this.dom.currentRoundNum.textContent = this.state.currentRound;
         
         if (this.dom.teamANameBadge) this.dom.teamANameBadge.innerHTML = `${this.config.teamA.avatar} ${this.config.teamA.name}`;
         if (this.dom.teamBNameBadge) this.dom.teamBNameBadge.innerHTML = `${this.config.teamB.avatar} ${this.config.teamB.name}`;
 
+        if (this.dom.mobileTeamAName) this.dom.mobileTeamAName.textContent = this.config.teamA.name.replace('Equipe ', '');
+        if (this.dom.mobileTeamBName) this.dom.mobileTeamBName.textContent = this.config.teamB.name.replace('Equipe ', '');
+
+        if (this.dom.menuScoreNameA) this.dom.menuScoreNameA.innerHTML = `${this.config.teamA.avatar} ${this.config.teamA.name}`;
+        if (this.dom.menuScoreNameB) this.dom.menuScoreNameB.innerHTML = `${this.config.teamB.avatar} ${this.config.teamB.name}`;
+
         const modesMap = {
             'classic': '🎯 Modo Clássico',
-            'combo_streak': '🔥 Modo Combo / Streaks',
-            'speed_rush': '⚡ Corrida Contra o Tempo'
+            'combo_streak': '🔥 Modo Combos',
+            'speed_rush': '⚡ Corrida Rápida'
         };
-        if (this.dom.gameModeBadge) {
-            this.dom.gameModeBadge.textContent = modesMap[this.config.gameMode] || '🎯 Clássico';
-        }
+        const modeLabel = modesMap[this.config.gameMode] || '🎯 Clássico';
+        if (this.dom.gameModeBadge) this.dom.gameModeBadge.textContent = modeLabel;
+        if (this.dom.menuModeText) this.dom.menuModeText.textContent = modeLabel;
     }
 
     renderCurrentWord() {
@@ -263,7 +290,7 @@ class GameEngine {
             this.state.isRunning = false;
             if (this.dom.statusBadge) {
                 this.dom.statusBadge.textContent = 'PAUSADO';
-                this.dom.statusBadge.className = 'badge bg-warning text-dark fs-5 align-self-center';
+                this.dom.statusBadge.className = 'badge bg-warning text-dark fs-6 align-self-center';
             }
         } else {
             if (this.state.timeLeft <= 0) {
@@ -275,7 +302,7 @@ class GameEngine {
             const team = this.state.currentTeam === 'A' ? this.config.teamA : this.config.teamB;
             if (this.dom.statusBadge) {
                 this.dom.statusBadge.textContent = `VEZ DE: ${team.avatar} ${team.name.toUpperCase()}`;
-                this.dom.statusBadge.className = 'badge bg-success fs-5 align-self-center';
+                this.dom.statusBadge.className = 'badge bg-success fs-6 align-self-center';
             }
             this.renderCurrentWord();
             if (this.dom.feedback) this.dom.feedback.textContent = 'Turma: Dê dicas sem falar a palavra!';
@@ -311,7 +338,7 @@ class GameEngine {
 
         if (this.dom.statusBadge) {
             this.dom.statusBadge.textContent = 'TEMPO ESGOTADO!';
-            this.dom.statusBadge.className = 'badge bg-danger fs-5 align-self-center';
+            this.dom.statusBadge.className = 'badge bg-danger fs-6 align-self-center';
         }
         if (this.dom.word) this.dom.word.textContent = 'FIM DO TURNO!';
 
@@ -342,9 +369,17 @@ class GameEngine {
         this.state.streak = 0;
         this.updateStreakDisplay();
 
+        const activeTeamObj = team === 'A' ? this.config.teamA : this.config.teamB;
+        if (this.dom.menuTurnBadge) {
+            this.dom.menuTurnBadge.textContent = `${activeTeamObj.avatar} Vez de ${activeTeamObj.name}`;
+        }
+
         if (team === 'A') {
             if (this.dom.teamACard) this.dom.teamACard.classList.add('active-team');
             if (this.dom.teamBCard) this.dom.teamBCard.classList.remove('active-team');
+            if (this.dom.mobileTeamACard) this.dom.mobileTeamACard.classList.add('active-team');
+            if (this.dom.mobileTeamBCard) this.dom.mobileTeamBCard.classList.remove('active-team');
+            
             if (this.dom.teamATurnStatus) {
                 this.dom.teamATurnStatus.textContent = 'TURNO ATUAL';
                 this.dom.teamATurnStatus.className = 'mt-2 small text-warning fw-bold';
@@ -356,6 +391,9 @@ class GameEngine {
         } else {
             if (this.dom.teamBCard) this.dom.teamBCard.classList.add('active-team');
             if (this.dom.teamACard) this.dom.teamACard.classList.remove('active-team');
+            if (this.dom.mobileTeamBCard) this.dom.mobileTeamBCard.classList.add('active-team');
+            if (this.dom.mobileTeamACard) this.dom.mobileTeamACard.classList.remove('active-team');
+
             if (this.dom.teamBTurnStatus) {
                 this.dom.teamBTurnStatus.textContent = 'TURNO ATUAL';
                 this.dom.teamBTurnStatus.className = 'mt-2 small text-warning fw-bold';
@@ -422,8 +460,24 @@ class GameEngine {
 
     updateScoresDisplay() {
         this.ensureDom();
-        if (this.dom.teamAScore) this.dom.teamAScore.textContent = this.state.scores.A.points;
-        if (this.dom.teamBScore) this.dom.teamBScore.textContent = this.state.scores.B.points;
+        const scoreA = this.state.scores.A.points;
+        const scoreB = this.state.scores.B.points;
+        const hitsA = this.state.scores.A.correct;
+        const hitsB = this.state.scores.B.correct;
+
+        // Desktop
+        if (this.dom.teamAScore) this.dom.teamAScore.textContent = scoreA;
+        if (this.dom.teamBScore) this.dom.teamBScore.textContent = scoreB;
+
+        // Mobile
+        if (this.dom.mobileTeamAScore) this.dom.mobileTeamAScore.textContent = scoreA;
+        if (this.dom.mobileTeamBScore) this.dom.mobileTeamBScore.textContent = scoreB;
+
+        // Menu Offcanvas
+        if (this.dom.menuScoreA) this.dom.menuScoreA.textContent = scoreA;
+        if (this.dom.menuScoreB) this.dom.menuScoreB.textContent = scoreB;
+        if (this.dom.menuHitsA) this.dom.menuHitsA.textContent = hitsA;
+        if (this.dom.menuHitsB) this.dom.menuHitsB.textContent = hitsB;
     }
 
     resetGame(fullReset = true) {
@@ -454,12 +508,27 @@ class GameEngine {
         if (this.dom.currentRoundNum) this.dom.currentRoundNum.textContent = this.state.currentRound;
         if (this.dom.statusBadge) {
             this.dom.statusBadge.textContent = 'AGUARDANDO';
-            this.dom.statusBadge.className = 'badge bg-secondary fs-5 align-self-center';
+            this.dom.statusBadge.className = 'badge bg-secondary fs-6 align-self-center';
         }
         if (this.dom.word) this.dom.word.textContent = 'QUEM SOU MASTER';
         if (this.dom.category) this.dom.category.textContent = 'Pressione ESPAÇO para Iniciar';
         if (this.dom.feedback) this.dom.feedback.textContent = 'Turma: Dê dicas sem falar a palavra misteriosa!';
         if (this.dom.curiosityPill) this.dom.curiosityPill.classList.add('d-none');
+    }
+
+    toggleSound() {
+        if (!window.soundEngine) return;
+        window.soundEngine.enabled = !window.soundEngine.enabled;
+        this.ensureDom();
+        if (this.dom.menuSoundIcon && this.dom.menuSoundText) {
+            if (window.soundEngine.enabled) {
+                this.dom.menuSoundIcon.className = 'bi bi-volume-up-fill text-success fs-5';
+                this.dom.menuSoundText.textContent = 'Sons Ativados';
+            } else {
+                this.dom.menuSoundIcon.className = 'bi bi-volume-mute-fill text-danger fs-5';
+                this.dom.menuSoundText.textContent = 'Sons Desativados (Mudo)';
+            }
+        }
     }
 
     triggerSmallConfetti() {
