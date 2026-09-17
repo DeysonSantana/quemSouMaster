@@ -10,48 +10,61 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     
-    <!-- Custom Theme & Projector CSS -->
+    <!-- Favicon & PWA Icons -->
+    <link rel="icon" type="image/png" href="./favicon.png">
+    <link rel="apple-touch-icon" href="./icons/icon-192.png">
+    
+    <!-- Custom Theme & Responsive CSS -->
     <link rel="stylesheet" href="./css/style.css">
     <link rel="manifest" href="./manifest.json">
 </head>
-<body class="d-flex flex-column justify-content-between p-2 p-md-3">
+<body class="d-flex flex-column justify-content-between min-vh-100">
 
     <!-- ======================================================
-         BARRA SUPERIOR: NAVEGAÇÃO SPA, BARALHO ATIVO & CONTROLES
+         BARRA SUPERIOR LIMPA: BRAND, CRONÔMETRO & MENU TOGGLE
     ====================================================== -->
-    <header class="row align-items-center text-center g-2 mb-2">
-        <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-2 px-3">
+    <header class="main-navbar px-3 py-2 shadow-sm">
+        <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap gap-2">
             
-            <!-- Indicadores: Rodada & Baralho Atual -->
-            <div class="d-flex align-items-center gap-2 flex-wrap">
-                <span class="badge bg-primary fs-6 px-3 py-2 shadow-sm" id="round-indicator">
-                    <i class="bi bi-flag-fill me-1"></i> RODADA: <span id="current-round-num">1</span> / <span id="total-rounds-num">3</span>
-                </span>
-                <span class="badge bg-dark border border-secondary fs-6 px-3 py-2 text-warning cursor-pointer" id="active-deck-indicator" onclick="gameEngine.showView('decks')" title="Clique para trocar de baralho">
-                    <i class="bi bi-collection-play me-1"></i> Carregando...
-                </span>
-                <span class="badge bg-danger fs-6 px-3 py-2 d-none" id="streak-indicator">
-                    🔥 COMBO <span id="streak-count">2x</span>
+            <!-- Marca & Seletor de Baralho -->
+            <div class="d-flex align-items-center gap-2">
+                <a href="#" class="d-flex align-items-center text-decoration-none text-light me-1" onclick="gameEngine.showView('game')">
+                    <img src="./favicon.png" alt="Logo Quem Sou Master" width="32" height="32" class="rounded-circle me-2 border border-warning shadow-sm">
+                    <span class="fw-bolder fs-5 text-light tracking-wide d-none d-sm-inline">Quem Sou <span class="text-warning">Master</span></span>
+                </a>
+
+                <div class="d-flex align-items-center bg-dark bg-opacity-75 border border-secondary rounded-pill px-2 py-1 cursor-pointer" onclick="gameEngine.showView('decks')" title="Trocar baralho">
+                    <span class="badge bg-primary rounded-pill me-1 d-none d-md-inline" id="round-indicator">
+                        <i class="bi bi-flag-fill"></i> <span id="current-round-num">1</span>/<span id="total-rounds-num">3</span>
+                    </span>
+                    <span class="small text-warning fw-bold text-truncate" style="max-width: 160px;" id="active-deck-indicator">
+                        <i class="bi bi-collection-play me-1"></i> Carregando...
+                    </span>
+                </div>
+
+                <span class="badge bg-danger rounded-pill px-2 py-1 d-none" id="streak-indicator">
+                    🔥 <span id="streak-count">2x</span>
                 </span>
             </div>
 
-            <!-- Cronômetro Central Gigante para Projetor -->
-            <div class="d-inline-flex align-items-center gap-3 bg-dark bg-opacity-75 px-4 py-1 rounded-4 border border-secondary shadow">
-                <i class="bi bi-clock-history fs-2 text-warning"></i>
+            <!-- Cronômetro Central Flutuante -->
+            <div class="d-flex align-items-center gap-2 bg-dark bg-opacity-75 px-3 py-1 rounded-4 border border-secondary shadow-sm">
+                <i class="bi bi-clock-history fs-3 text-warning"></i>
                 <div id="timer" class="timer-display text-warning font-monospace">60</div>
-                <span id="game-status-badge" class="badge bg-secondary fs-5 align-self-center">AGUARDANDO</span>
+                <span id="game-status-badge" class="badge bg-secondary fs-6 align-self-center d-none d-md-inline">AGUARDANDO</span>
             </div>
 
-            <!-- Botões de Ação SPA -->
-            <div class="d-flex gap-2">
-                <button class="btn btn-outline-info btn-sm fw-bold px-3 py-2" onclick="gameEngine.showView('decks')">
-                    <i class="bi bi-grid-fill me-1"></i> Baralhos
+            <!-- Botões Diretos + Botão Menu Toggle -->
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-outline-info btn-sm fw-bold px-3 py-1 rounded-pill d-none d-lg-inline-flex align-items-center gap-1" onclick="gameEngine.showView('decks')">
+                    <i class="bi bi-collection-fill"></i> Baralhos
                 </button>
-                <button class="btn btn-outline-warning btn-sm fw-bold px-3 py-2" data-bs-toggle="modal" data-bs-target="#configModal">
-                    <i class="bi bi-sliders me-1"></i> Ajustes
+                <button class="btn btn-outline-warning btn-sm fw-bold px-3 py-1 rounded-pill d-none d-lg-inline-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#configModal">
+                    <i class="bi bi-sliders"></i> Ajustes
                 </button>
-                <button class="btn btn-outline-light btn-sm fw-bold px-2 py-2" data-bs-toggle="modal" data-bs-target="#themeModal" title="Trocar Tema Visual">
-                    <i class="bi bi-palette-fill"></i>
+                <button class="btn btn-outline-light rounded-pill px-3 py-1 d-flex align-items-center gap-2 fw-bold shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+                    <i class="bi bi-list fs-5"></i>
+                    <span>Menu</span>
                 </button>
             </div>
 
@@ -59,115 +72,131 @@
     </header>
 
     <!-- ======================================================
-         TELA 1: ARENA DO JOGO (PROJETOR EM SALA DE AULA)
+         TELA 1: ARENA DO JOGO (RESPONSIVA / PROJETOR / MOBILE)
     ====================================================== -->
-    <section id="view-game-arena" class="row flex-grow-1 align-items-center my-2 g-3">
+    <main class="container-fluid flex-grow-1 d-flex flex-column justify-content-center p-2 p-md-3">
         
-        <!-- Placar Lateral Esquerdo: Equipe 1 -->
-        <div class="col-12 col-md-3 col-xl-2 order-2 order-md-1">
-            <div id="team-a-card" class="team-card active-team p-3 text-center">
-                <span id="team-a-name-badge" class="badge bg-primary fs-6 mb-2 text-uppercase">🚀 EQUIPE ALPHA</span>
-                <div id="team-a-score" class="score-num text-primary font-monospace">0</div>
-                <div class="text-white-50 small">PONTOS TOTAIS</div>
-                <div class="mt-2 small text-warning fw-bold" id="team-a-turn-status">TURNO ATUAL</div>
-            </div>
-        </div>
-
-        <!-- Cartão Central da Palavra Misteriosa (Destaque do Projetor) -->
-        <div class="col-12 col-md-6 col-xl-8 order-1 order-md-2 text-center">
-            <div class="arena-card p-4 p-md-5">
-                
-                <div class="d-flex justify-content-center gap-2 mb-3">
-                    <span id="word-category" class="badge bg-info text-dark category-badge px-3 py-2 text-uppercase">
-                        Pressione ESPAÇO para Iniciar
-                    </span>
-                    <span id="game-mode-badge" class="badge bg-secondary category-badge px-3 py-2 text-uppercase d-none d-sm-inline">
-                        🔥 Modo Combos
-                    </span>
-                </div>
-
-                <h1 id="mystery-word" class="word-display text-light mb-2 py-2">
-                    QUEM SOU MASTER
-                </h1>
-
-                <!-- Pílula Pedagógica / Curiosidade do Conceito -->
-                <div id="curiosity-pill" class="curiosity-pill d-none my-3">
-                    💡 <strong>Dica do Professor:</strong> ...
-                </div>
-
-                <div id="round-feedback" class="fs-4 fw-bold mt-2 text-secondary">
-                    Turma: Dê dicas sem falar o nome da palavra!
+        <section id="view-game-arena" class="row align-items-center justify-content-center g-3 my-auto">
+            
+            <!-- Placar Lateral Esquerdo: Equipe 1 -->
+            <div class="col-12 col-md-3 col-xl-2 order-2 order-md-1">
+                <div id="team-a-card" class="team-card active-team p-3 text-center shadow">
+                    <span id="team-a-name-badge" class="badge bg-primary fs-6 mb-1 text-uppercase text-truncate w-100">🚀 EQUIPE ALPHA</span>
+                    <div id="team-a-score" class="score-num text-primary font-monospace">0</div>
+                    <div class="text-white-50 small fw-bold">PONTOS TOTAIS</div>
+                    <div class="mt-1 small text-warning fw-bold" id="team-a-turn-status">TURNO ATUAL</div>
                 </div>
             </div>
-        </div>
 
-        <!-- Placar Lateral Direito: Equipe 2 -->
-        <div class="col-12 col-md-3 col-xl-2 order-3 order-md-3">
-            <div id="team-b-card" class="team-card p-3 text-center">
-                <span id="team-b-name-badge" class="badge bg-danger fs-6 mb-2 text-uppercase">🦁 EQUIPE BETA</span>
-                <div id="team-b-score" class="score-num text-danger font-monospace">0</div>
-                <div class="text-white-50 small">PONTOS TOTAIS</div>
-                <div class="mt-2 small text-white-50" id="team-b-turn-status">AGUARDANDO</div>
-            </div>
-        </div>
-
-    </section>
-
-    <!-- ======================================================
-         TELA 2: BIBLIOTECA DE BARALHOS & CONSTRUTOR (SPA VIEW)
-    ====================================================== -->
-    <section id="view-decks-library" class="row flex-grow-1 align-items-start my-2 g-3 d-none">
-        <div class="col-12">
-            <div class="card bg-dark bg-opacity-75 border-secondary p-3 p-md-4 rounded-4 shadow">
-                
-                <!-- Cabeçalho da Biblioteca -->
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4 pb-3 border-bottom border-secondary">
-                    <div>
-                        <h4 class="text-light fw-bold mb-1"><i class="bi bi-collection-fill text-info me-2"></i>Biblioteca de Baralhos Multi-Disciplinares</h4>
-                        <p class="text-white-50 small mb-0">Escolha uma disciplina pronta para a aula ou crie seu próprio baralho personalizado.</p>
+            <!-- Cartão Central da Palavra Misteriosa -->
+            <div class="col-12 col-md-6 col-xl-8 order-1 order-md-2 text-center">
+                <div class="arena-card p-3 p-md-4 p-lg-5 shadow-lg">
+                    
+                    <div class="d-flex justify-content-center align-items-center gap-2 mb-2 flex-wrap">
+                        <span id="word-category" class="badge bg-info text-dark category-badge px-3 py-2 text-uppercase fw-bold rounded-pill">
+                            Pressione ESPAÇO para Iniciar
+                        </span>
+                        <span id="game-mode-badge" class="badge bg-secondary category-badge px-3 py-2 text-uppercase d-none d-sm-inline rounded-pill">
+                            🔥 Modo Combos
+                        </span>
                     </div>
-                    <div class="d-flex gap-2 flex-wrap">
-                        <button class="btn btn-success btn-sm fw-bold px-3" onclick="deckBuilder.openCreateDeckModal()">
-                            <i class="bi bi-plus-circle me-1"></i> Criar Novo Baralho
+
+                    <h1 id="mystery-word" class="word-display text-light mb-2 py-2">
+                        QUEM SOU MASTER
+                    </h1>
+
+                    <!-- Pílula Pedagógica / Curiosidade -->
+                    <div id="curiosity-pill" class="curiosity-pill d-none my-2">
+                        💡 <strong>Dica do Professor:</strong> ...
+                    </div>
+
+                    <div id="round-feedback" class="fs-5 fw-bold mt-2 text-secondary">
+                        Turma: Dê dicas sem falar o nome da palavra!
+                    </div>
+
+                    <!-- Controles por Toque (Mobile / Tablets / Touchscreens) -->
+                    <div class="d-flex justify-content-center gap-2 mt-4 pt-2 border-top border-secondary flex-wrap">
+                        <button class="btn btn-warning touch-control-btn px-4" onclick="gameEngine.toggleStartPause()">
+                            <i class="bi bi-play-circle-fill me-1"></i> Iniciar / Pausar
                         </button>
-                        <label class="btn btn-outline-info btn-sm fw-bold px-3 mb-0">
-                            <i class="bi bi-upload me-1"></i> Importar CSV / JSON
-                            <input type="file" id="import-deck-file" accept=".json,.csv" class="d-none">
-                        </label>
-                        <button class="btn btn-outline-secondary btn-sm" onclick="shareManager.downloadCsvTemplate()" title="Baixar Modelo de Planilha CSV">
-                            <i class="bi bi-file-earmark-spreadsheet me-1"></i> Modelo CSV
+                        <button class="btn btn-success touch-control-btn px-4" onclick="gameEngine.handleCorrect()">
+                            <i class="bi bi-check-circle-fill me-1"></i> Acertou (+1)
                         </button>
-                        <button class="btn btn-primary btn-sm fw-bold px-3" onclick="gameEngine.showView('game')">
-                            <i class="bi bi-play-circle-fill me-1"></i> Voltar ao Jogo
+                        <button class="btn btn-danger touch-control-btn px-4" onclick="gameEngine.handleSkip()">
+                            <i class="bi bi-x-circle-fill me-1"></i> Pular
                         </button>
                     </div>
-                </div>
 
-                <!-- Grid de Baralhos -->
-                <div class="row g-3" id="decks-grid-container">
-                    <!-- Renderizado dinamicamente via deckBuilder.js -->
                 </div>
-
             </div>
-        </div>
-    </section>
+
+            <!-- Placar Lateral Direito: Equipe 2 -->
+            <div class="col-12 col-md-3 col-xl-2 order-3 order-md-3">
+                <div id="team-b-card" class="team-card p-3 text-center shadow">
+                    <span id="team-b-name-badge" class="badge bg-danger fs-6 mb-1 text-uppercase text-truncate w-100">🦁 EQUIPE BETA</span>
+                    <div id="team-b-score" class="score-num text-danger font-monospace">0</div>
+                    <div class="text-white-50 small fw-bold">PONTOS TOTAIS</div>
+                    <div class="mt-1 small text-white-50" id="team-b-turn-status">AGUARDANDO</div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ======================================================
+             TELA 2: BIBLIOTECA DE BARALHOS & CONSTRUTOR
+        ====================================================== -->
+        <section id="view-decks-library" class="row align-items-start my-2 g-3 d-none">
+            <div class="col-12">
+                <div class="card bg-dark bg-opacity-75 border-secondary p-3 p-md-4 rounded-4 shadow">
+                    
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4 pb-3 border-bottom border-secondary">
+                        <div>
+                            <h4 class="text-light fw-bold mb-1"><i class="bi bi-collection-fill text-info me-2"></i>Biblioteca de Baralhos</h4>
+                            <p class="text-white-50 small mb-0">Escolha uma disciplina para a aula ou crie seu próprio baralho personalizado.</p>
+                        </div>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button class="btn btn-success btn-sm fw-bold px-3 rounded-pill" onclick="deckBuilder.openCreateDeckModal()">
+                                <i class="bi bi-plus-circle me-1"></i> Criar Baralho
+                            </button>
+                            <label class="btn btn-outline-info btn-sm fw-bold px-3 mb-0 rounded-pill">
+                                <i class="bi bi-upload me-1"></i> Importar CSV / JSON
+                                <input type="file" id="import-deck-file" accept=".json,.csv" class="d-none">
+                            </label>
+                            <button class="btn btn-outline-secondary btn-sm rounded-pill" onclick="shareManager.downloadCsvTemplate()" title="Baixar Modelo de Planilha CSV">
+                                <i class="bi bi-file-earmark-spreadsheet me-1"></i> Modelo CSV
+                            </button>
+                            <button class="btn btn-primary btn-sm fw-bold px-3 rounded-pill" onclick="gameEngine.showView('game')">
+                                <i class="bi bi-play-circle-fill me-1"></i> Voltar ao Jogo
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row g-3" id="decks-grid-container">
+                        <!-- Renderizado dinamicamente via deckBuilder.js -->
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
 
     <!-- ======================================================
-         RODAPÉ: ATALHOS DE TECLADO DO PROFESSOR
+         RODAPÉ LIMPO COM ATALHOS
     ====================================================== -->
-    <footer class="row text-center pt-2">
-        <div class="col-12 d-flex flex-wrap justify-content-center align-items-center gap-2 gap-md-3">
-            <span class="text-white-50 small d-none d-lg-inline">Atalhos:</span>
+    <footer class="text-center py-2 px-3 border-top border-secondary bg-dark bg-opacity-50">
+        <div class="d-flex flex-wrap justify-content-center align-items-center gap-2 gap-md-3">
+            <span class="text-white-50 small d-none d-md-inline">Atalhos do Professor:</span>
             <div class="d-flex align-items-center gap-1">
                 <span class="shortcut-badge text-warning font-monospace fw-bold">ESPAÇO</span>
                 <span class="small text-white-50">Iniciar/Pausar</span>
             </div>
             <div class="d-flex align-items-center gap-1">
-                <span class="shortcut-badge text-success font-monospace fw-bold">SETA DIR. (➡️)</span>
-                <span class="small text-white-50">Acertou (+Pontos)</span>
+                <span class="shortcut-badge text-success font-monospace fw-bold">➡️</span>
+                <span class="small text-white-50">Acertou</span>
             </div>
             <div class="d-flex align-items-center gap-1">
-                <span class="shortcut-badge text-danger font-monospace fw-bold">SETA ESQ. (⬅️)</span>
+                <span class="shortcut-badge text-danger font-monospace fw-bold">⬅️</span>
                 <span class="small text-white-50">Pular</span>
             </div>
             <div class="d-flex align-items-center gap-1">
@@ -178,16 +207,110 @@
                 <span class="shortcut-badge text-light font-monospace fw-bold">F</span>
                 <span class="small text-white-50">Tela Cheia</span>
             </div>
-            <div class="d-flex align-items-center gap-1">
-                <span class="shortcut-badge text-secondary font-monospace fw-bold">R</span>
-                <span class="small text-white-50">Reiniciar</span>
-            </div>
         </div>
     </footer>
 
     <!-- ======================================================
-         MODAIS (CRIAR/EDITAR DECK, AJUSTES, COMPARTILHAR, TEMAS, PÓDIO)
+         MENU TOGGLE (OFFCANVAS DRAWER LATERAL)
     ====================================================== -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+        <div class="offcanvas-header">
+            <div class="d-flex align-items-center gap-2">
+                <img src="./favicon.png" alt="Logo" width="30" height="30" class="rounded-circle border border-warning">
+                <h5 class="offcanvas-title fw-bold text-light" id="sidebarMenuLabel">Quem Sou <span class="text-warning">Master</span></h5>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column justify-content-between p-3">
+            <div class="d-flex flex-column gap-2">
+                
+                <button class="menu-item-btn" onclick="gameEngine.showView('game'); bootstrap.Offcanvas.getInstance(document.getElementById('sidebarMenu')).hide();">
+                    <i class="bi bi-play-circle-fill text-primary fs-5"></i>
+                    <span>Arena de Jogo</span>
+                </button>
+
+                <button class="menu-item-btn" onclick="gameEngine.showView('decks'); bootstrap.Offcanvas.getInstance(document.getElementById('sidebarMenu')).hide();">
+                    <i class="bi bi-collection-fill text-info fs-5"></i>
+                    <span>Biblioteca de Baralhos</span>
+                </button>
+
+                <button class="menu-item-btn" onclick="deckBuilder.openCreateDeckModal(); bootstrap.Offcanvas.getInstance(document.getElementById('sidebarMenu')).hide();">
+                    <i class="bi bi-plus-circle-fill text-success fs-5"></i>
+                    <span>Criar Novo Baralho</span>
+                </button>
+
+                <hr class="border-secondary my-2">
+
+                <button class="menu-item-btn" data-bs-toggle="modal" data-bs-target="#configModal">
+                    <i class="bi bi-sliders text-warning fs-5"></i>
+                    <span>Ajustes da Partida</span>
+                </button>
+
+                <button class="menu-item-btn" data-bs-toggle="modal" data-bs-target="#themeModal">
+                    <i class="bi bi-palette-fill text-info fs-5"></i>
+                    <span>Temas Visuais</span>
+                </button>
+
+                <button class="menu-item-btn" data-bs-toggle="modal" data-bs-target="#rulesModal">
+                    <i class="bi bi-question-circle-fill text-light fs-5"></i>
+                    <span>Como Jogar (Regras)</span>
+                </button>
+
+                <hr class="border-secondary my-2">
+
+                <button class="menu-item-btn" onclick="gameEngine.toggleFullscreen();">
+                    <i class="bi bi-arrows-fullscreen text-light fs-5"></i>
+                    <span>Modo Tela Cheia (F)</span>
+                </button>
+
+                <button class="menu-item-btn" onclick="soundEngine.enabled = !soundEngine.enabled; alert(soundEngine.enabled ? '🔊 Sons Ativados' : '🔇 Sons Desativados');">
+                    <i class="bi bi-volume-up-fill text-light fs-5"></i>
+                    <span>Alternar Som (Mudo)</span>
+                </button>
+
+            </div>
+
+            <div class="text-center text-white-50 small pt-3 border-top border-secondary">
+                👑 <strong>Família Games Master</strong><br>
+                100% Offline SPA • PWA Ready
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================
+         MODAIS: REGRAS, CRIAR/EDITAR DECK, AJUSTES, TEMAS, PÓDIO
+    ====================================================== -->
+
+    <!-- MODAL: COMO JOGAR / REGRAS -->
+    <div class="modal fade" id="rulesModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-book-half text-info me-2"></i>Como Jogar Quem Sou Master (Cadeira Quente)</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-12 col-md-4 text-center p-3 bg-dark bg-opacity-50 rounded-4 border border-secondary">
+                            <div class="fs-1 text-warning mb-2">🪑</div>
+                            <h6 class="fw-bold text-light">1. A Cadeira Quente</h6>
+                            <p class="small text-white-50 mb-0">Um aluno senta-se de costas para a tela do projetor.</p>
+                        </div>
+                        <div class="col-12 col-md-4 text-center p-3 bg-dark bg-opacity-50 rounded-4 border border-secondary">
+                            <div class="fs-1 text-info mb-2">🗣️</div>
+                            <h6 class="fw-bold text-light">2. Dicas da Turma</h6>
+                            <p class="small text-white-50 mb-0">A turma dá dicas sobre o conceito sem falar o nome da palavra.</p>
+                        </div>
+                        <div class="col-12 col-md-4 text-center p-3 bg-dark bg-opacity-50 rounded-4 border border-secondary">
+                            <div class="fs-1 text-success mb-2">⌨️</div>
+                            <h6 class="fw-bold text-light">3. Professor no Controle</h6>
+                            <p class="small text-white-50 mb-0">O professor valida acertos com ➡️ e pulos com ⬅️ pelo teclado ou toque.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL: CRIAR / EDITAR BARALHO -->
     <div class="modal fade" id="editDeckModal" tabindex="-1" aria-hidden="true">
@@ -246,7 +369,6 @@
                 <div class="modal-body">
                     <form id="game-settings-form" onsubmit="event.preventDefault();">
                         
-                        <!-- Modo de Pontuação (MDA Framework) -->
                         <div class="mb-3">
                             <label class="form-label text-light fw-bold">Modo de Gamificação:</label>
                             <select id="config-game-mode" class="form-select bg-dark text-light border-secondary">
@@ -279,7 +401,6 @@
                             </div>
                         </div>
 
-                        <!-- Equipes -->
                         <div class="row g-2 mb-3">
                             <div class="col-6">
                                 <label class="form-label text-primary fw-bold">Equipe 1:</label>

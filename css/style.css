@@ -13,6 +13,7 @@
     --correct-flash: #198754;
     --skip-flash: #dc3545;
     --highlight: #00d2ff;
+    --nav-bg: rgba(13, 17, 23, 0.9);
 }
 
 [data-theme="chalkboard"] {
@@ -25,6 +26,7 @@
     --correct-flash: #20c997;
     --skip-flash: #e63946;
     --highlight: #ffe066;
+    --nav-bg: rgba(19, 36, 27, 0.95);
 }
 
 [data-theme="emerald"] {
@@ -37,6 +39,7 @@
     --correct-flash: #2b8a3e;
     --skip-flash: #c92a2a;
     --highlight: #69db7c;
+    --nav-bg: rgba(6, 30, 22, 0.95);
 }
 
 [data-theme="sunset"] {
@@ -49,6 +52,7 @@
     --correct-flash: #37b24d;
     --skip-flash: #f03e3e;
     --highlight: #ff922b;
+    --nav-bg: rgba(31, 17, 36, 0.95);
 }
 
 [data-theme="amoled"] {
@@ -61,6 +65,7 @@
     --correct-flash: #198754;
     --skip-flash: #dc3545;
     --highlight: #ffc107;
+    --nav-bg: #050505;
 }
 
 [data-theme="light"] {
@@ -73,10 +78,11 @@
     --correct-flash: #28a745;
     --skip-flash: #dc3545;
     --highlight: #0d6efd;
+    --nav-bg: rgba(255, 255, 255, 0.95);
 }
 
 /* ======================================================
-   BASE & LAYOUT
+   BASE & LAYOUT LIMPO
 ====================================================== */
 body {
     background-color: var(--bg-main);
@@ -88,6 +94,14 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Barra Superior / Navbar */
+.main-navbar {
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--card-border);
+    backdrop-filter: blur(15px);
+    z-index: 1000;
+}
+
 /* Efeito Flash Visual de Acerto / Pulo */
 body.flash-correct {
     background-color: var(--correct-flash) !important;
@@ -97,16 +111,16 @@ body.flash-skip {
     background-color: var(--skip-flash) !important;
 }
 
-/* Tipografia de Projetor */
+/* Tipografia Fluida & Responsiva */
 .timer-display {
-    font-size: clamp(3.2rem, 7.5vw, 6.5rem);
+    font-size: clamp(2.6rem, 6vw, 5.5rem);
     font-weight: 900;
     letter-spacing: 2px;
     line-height: 1;
 }
 
 .word-display {
-    font-size: clamp(2.4rem, 5vw, 5.2rem);
+    font-size: clamp(2.2rem, 5.2vw, 4.8rem);
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -115,11 +129,11 @@ body.flash-skip {
 }
 
 .category-badge {
-    font-size: clamp(1rem, 1.6vw, 1.5rem);
-    letter-spacing: 1.5px;
+    font-size: clamp(0.9rem, 1.4vw, 1.35rem);
+    letter-spacing: 1.2px;
 }
 
-/* Cartões das Equipes nas Laterais */
+/* Cartões das Equipes */
 .team-card {
     background: var(--card-bg);
     border: 2px solid var(--card-border);
@@ -131,12 +145,12 @@ body.flash-skip {
 .team-card.active-team {
     border-color: #ffc107;
     background: rgba(255, 193, 7, 0.15);
-    box-shadow: 0 0 30px rgba(255, 193, 7, 0.45);
-    transform: scale(1.03);
+    box-shadow: 0 0 30px rgba(255, 193, 7, 0.4);
+    transform: scale(1.02);
 }
 
 .score-num {
-    font-size: clamp(2.8rem, 4.5vw, 4.2rem);
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
     font-weight: 900;
 }
 
@@ -155,7 +169,7 @@ body.flash-skip {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     padding: 8px 16px;
-    font-size: clamp(0.9rem, 1.2vw, 1.15rem);
+    font-size: clamp(0.85rem, 1.1vw, 1.1rem);
     color: var(--highlight);
     max-width: 850px;
     margin: 0 auto;
@@ -166,14 +180,14 @@ body.flash-skip {
     background: linear-gradient(45deg, #ff4500, #ff8c00);
     color: #ffffff;
     font-weight: 900;
-    padding: 6px 14px;
+    padding: 5px 12px;
     border-radius: 50px;
     box-shadow: 0 0 20px rgba(255, 69, 0, 0.6);
 }
 
 @keyframes pulseGlow {
     0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+    50% { transform: scale(1.08); }
     100% { transform: scale(1); }
 }
 
@@ -181,16 +195,29 @@ body.flash-skip {
     animation: pulseGlow 0.8s infinite;
 }
 
+/* Botões de Controle por Toque (Mobile/Tablet) */
+.touch-control-btn {
+    border-radius: 16px;
+    font-weight: 800;
+    padding: 14px 20px;
+    font-size: clamp(1rem, 2.5vw, 1.35rem);
+    transition: transform 0.1s active, box-shadow 0.2s ease;
+}
+
+.touch-control-btn:active {
+    transform: scale(0.96);
+}
+
 /* Atalhos de Teclado no Rodapé */
 .shortcut-badge {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     background-color: rgba(255, 255, 255, 0.12);
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 6px;
-    padding: 3px 7px;
+    padding: 3px 6px;
 }
 
-/* Catálogo de Baralhos (Decks Library) */
+/* Catálogo de Baralhos */
 .deck-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
@@ -205,6 +232,39 @@ body.flash-skip {
 
 .deck-card.active-deck {
     box-shadow: 0 0 20px rgba(13, 110, 253, 0.5);
+}
+
+/* Menu Offcanvas / Gaveta Lateral */
+.offcanvas {
+    background-color: #0d121c;
+    color: #f0f6fc;
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.offcanvas-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menu-item-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f0f6fc;
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+    transition: all 0.2s ease;
+    font-weight: 600;
+}
+
+.menu-item-btn:hover, .menu-item-btn:focus {
+    background: rgba(13, 110, 253, 0.2);
+    border-color: #0d6efd;
+    color: #ffffff;
+    transform: translateX(4px);
 }
 
 /* Modais */

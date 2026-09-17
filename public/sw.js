@@ -1,7 +1,10 @@
-const CACHE_NAME = 'quem-sou-eu-ghpages-v2';
+const CACHE_NAME = 'quem-sou-master-v3';
 const ASSETS = [
     './',
     './index.html',
+    './favicon.png',
+    './icons/icon-192.png',
+    './icons/icon-512.png',
     './css/style.css',
     './js/audio.js',
     './js/themeManager.js',
@@ -19,7 +22,7 @@ const ASSETS = [
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log('[Service Worker] Cacheando assets para GitHub Pages v2');
+            console.log('[Service Worker] Cacheando assets do Quem Sou Master v3');
             return cache.addAll(ASSETS).catch(err => console.warn('Erro ao salvar assets no cache:', err));
         })
     );
