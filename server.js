@@ -65,5 +65,5 @@ app.post('/api/scores', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🎮 Servidor 'Quem Sou Eu?' rodando em: http://localhost:${PORT}`);
+    console.log(`🎮 Servidor 'Quem Sou Master' rodando em: http://localhost:${PORT}`);
 });

@@ -456,7 +456,7 @@ class GameEngine {
             this.dom.statusBadge.textContent = 'AGUARDANDO';
             this.dom.statusBadge.className = 'badge bg-secondary fs-5 align-self-center';
         }
-        if (this.dom.word) this.dom.word.textContent = 'QUEM SOU EU?';
+        if (this.dom.word) this.dom.word.textContent = 'QUEM SOU MASTER';
         if (this.dom.category) this.dom.category.textContent = 'Pressione ESPAÇO para Iniciar';
         if (this.dom.feedback) this.dom.feedback.textContent = 'Turma: Dê dicas sem falar a palavra misteriosa!';
         if (this.dom.curiosityPill) this.dom.curiosityPill.classList.add('d-none');

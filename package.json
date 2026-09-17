@@ -1,7 +1,7 @@
 {
-  "name": "quem-sou-eu-tech",
+  "name": "quem-sou-master",
   "version": "1.0.0",
-  "description": "Jogo educativo estilo Cadeira Quente focado em tecnologia",
+  "description": "Quem Sou Master - Jogo educativo estilo Cadeira Quente (Família Games Master)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

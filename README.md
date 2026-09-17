@@ -1,11 +1,12 @@
-# 🏆 Quem Sou Eu? - Cadeira Quente Educacional (SPA Offline / PWA)
+# 👑 Quem Sou Master - Games Master (SPA Offline / PWA)
 
-Uma Single Page Application (SPA) moderna, rápida e gamificada para engajamento em sala de aula através do jogo **"Quem Sou Eu?" / Cadeira Quente**, otimizada para projetores e compatível com **qualquer disciplina** (História, Geografia, Ciências, Literatura, Matemática, Tecnologia e Artes).
+Uma Single Page Application (SPA) moderna, rápida e gamificada para engajamento em sala de aula através do jogo **"Quem Sou Master"** (Cadeira Quente Educacional), parte da família **Games Master** (ao lado do *QuizMaster*).
 
 ---
 
 ## 🌟 Destaques da Aplicação
 
+- **👑 Família Games Master**: Arquitetura modular padronizada com o QuizMaster (Framework MDA de gamificação e interface imersiva).
 - **100% Offline & PWA**: Funciona sem internet após o primeiro acesso com Service Worker nativo.
 - **GitHub Pages Ready**: Basta habilitar o GitHub Pages no repositório para rodar instantaneamente.
 - **Zero Fricção & Sem Backend**: Não requer banco de dados ou servidor ativo; tudo persiste no `localStorage`.
@@ -22,14 +23,14 @@ Uma Single Page Application (SPA) moderna, rápida e gamificada para engajamento
 1. Faça o commit e push de todos os arquivos para a branch principal (`main`) do seu repositório no GitHub:
    ```bash
    git add .
-   git commit -m "feat: SPA multi-disciplinar offline para GitHub Pages"
+   git commit -m "feat: Quem Sou Master - Games Master"
    git push origin main
    ```
 2. No seu repositório no GitHub, acesse **Settings** ➔ **Pages**.
 3. Em **Build and deployment**:
    - **Source**: `Deploy from a branch`
    - **Branch**: `main` / Folder: `/ (root)`
-4. Clique em **Save**. Em instantes o link estará disponível (ex: `https://seu-usuario.github.io/quem-sou-eu/`).
+4. Clique em **Save**. Em instantes o link estará disponível (ex: `https://seu-usuario.github.io/quem-sou-master/`).
 
 ---
 
